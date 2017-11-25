@@ -16,6 +16,7 @@ public class LoginButton extends Button {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				buttonEntered.start();
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
@@ -28,7 +29,7 @@ public class LoginButton extends Button {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//버튼클릭 음악
+				buttonPressed.start();
 				StartMenu.getInstance().login();
 			}
 		});

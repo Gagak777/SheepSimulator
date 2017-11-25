@@ -2,11 +2,7 @@ package sheepSimulator;
 
 public class SheepFactory {
 	
-	private static SheepFactory Instance;
-	
-	static {
-		Instance = null;
-	}
+	private static SheepFactory Instance = null;
 	
 	private SheepFactory() {}
 	
@@ -15,5 +11,9 @@ public class SheepFactory {
 			this.Instance = new SheepFactory();
 		
 		return Instance;
+	}
+	
+	public Sheep makeSheep() {
+		return new Sheep(); //이거저저 추가하기
 	}
 }

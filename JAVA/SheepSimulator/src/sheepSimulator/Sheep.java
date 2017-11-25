@@ -2,6 +2,9 @@ package sheepSimulator;
 
 public class Sheep extends Thread {
 
+	private int loc_x;
+	private int loc_y;
+	
 	private int satiety; //Æ÷¸¸°¨
 	private int lifeLimit;
 	private int birth;

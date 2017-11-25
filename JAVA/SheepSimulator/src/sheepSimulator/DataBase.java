@@ -3,7 +3,7 @@ package sheepSimulator;
 import java.util.Vector;
 
 public class DataBase {
-	private static DataBase Instance;
+	private static DataBase Instance = null;
 	private Vector userList;
 	private Vector simulList;
 	// 이하 설정값 등등 추가

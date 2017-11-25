@@ -2,12 +2,8 @@ package sheepSimulator;
 
 public class Simulator {
 	
-	private static Simulator Instance;
-	
-	static {
-		Instance = null;
-	}
-	
+	private static Simulator Instance = null;
+		
 	private Simulator() {}
 	
 	public static Simulator getInstance() {
