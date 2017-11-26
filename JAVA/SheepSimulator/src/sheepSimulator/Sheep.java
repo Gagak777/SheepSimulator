@@ -9,15 +9,21 @@ public class Sheep extends Thread {
 	private int lifeLimit;
 	private int birth;
 	private int stamina;
+	private boolean sex; //0: ¼öÄÆ, 1: ¾ÏÄÆ
 	
 	private int sheepState; //¿­°ÅÃ¼·Î ÀÚ±â ¸Ô±â Á×±â ±¸Çö
-
-	public Sheep() {
+	private Music cry;
+	
+	public Sheep(){ //dummy
+		
+	}
+	
+	public Sheep(boolean sex) {
+		this.sex = sex;
 		this.satiety = 100;
 		this.birth = MainClass.simulateYear;
 		this.stamina = 30;
 		this.lifeLimit = 10 + (int)(Math.random() * 6 - 3);
-		
 	}
 
 	@Override
@@ -31,7 +37,14 @@ public class Sheep extends Thread {
 	}
 
 	private void cry() {
-		
+		int temp = (int)(Math.random()*2-0.1);
+		switch(temp) {
+		case 0:
+			cry = new Music("CrySheep1.mp3");
+		case 1:
+			cry = new Music("CrySheep2.mp3");
+		}
+		cry.start();
 	}
 	
 	private void stand() {

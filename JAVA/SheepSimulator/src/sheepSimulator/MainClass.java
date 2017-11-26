@@ -6,9 +6,10 @@ public class MainClass {
 	public static final int S_HEIGHT = 720;
 	
 	public static int simulateYear = 0;
+	public static boolean pause = false;
 	
 	public static void main(String[] args) {
-		StartMenu.getInstance().excute();
+		StartMenu.getInstance();
 	}
 
 }

@@ -1,8 +1,13 @@
 package sheepSimulator;
 
+import java.util.Vector;
+
 public class Simulator {
 	
 	private static Simulator Instance = null;
+	
+	private Vector<Sheep> sheep;
+	private String simulID;
 		
 	private Simulator() {}
 	
