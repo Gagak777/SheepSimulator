@@ -11,10 +11,9 @@ public class ExitButton extends Button {
 	public ExitButton() {
 		
 		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/quit.png"));
-		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/quit.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/quit_entered.png"));
 		
 		this.setIcon(this.buttonImage);
-		
 		this.setBounds(375, 470, 535, 120);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);

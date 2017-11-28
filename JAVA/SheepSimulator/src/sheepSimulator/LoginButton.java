@@ -8,14 +8,18 @@ import javax.swing.ImageIcon;
 
 public class LoginButton extends Button {
 	public LoginButton(){
-		this.buttonImage = new ImageIcon("../res/image/loginButton.png");
+		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/loginButton.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/loginButton_entered.png"));
 		
+		this.setIcon(this.buttonImage);
+		this.setBounds(850, 250, 200, 152);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				buttonEntered = new Music("ButtonEntered.mp3");
 				buttonEntered.start();
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));

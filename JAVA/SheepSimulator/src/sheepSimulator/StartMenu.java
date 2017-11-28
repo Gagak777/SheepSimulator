@@ -6,6 +6,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class StartMenu extends JFrame {
 
@@ -20,6 +21,7 @@ public class StartMenu extends JFrame {
 	private Music backGroundMusic1;
 	private Music backGroundMusic2;
 	
+	private JPanel titlePanel;
 	private ExitButton exitButton;
 	private LoginButton loginButton;
 	private LogOutButton logoutButton;
@@ -40,10 +42,13 @@ public class StartMenu extends JFrame {
 		this.setLayout(null);
 
 		this.backGround = new ImageIcon(MainClass.class.getResource("../res/image/backGround.png")).getImage();
+		
+		this.loginButton = new LoginButton();
 		this.exitButton = new ExitButton();
-		
+
+		this.add(loginButton);
 		this.add(exitButton);
-		
+
 		this.initMenu();
 	}
 
