@@ -21,7 +21,7 @@ public class StartMenu extends JFrame {
 	private Music backGroundMusic1;
 	private Music backGroundMusic2;
 	
-	private JPanel titlePanel;
+	private JPanel titlePanel; // 양 시뮬레이터 제목 패널
 	private ExitButton exitButton;
 	private LoginButton loginButton;
 	private LogOutButton logoutButton;
