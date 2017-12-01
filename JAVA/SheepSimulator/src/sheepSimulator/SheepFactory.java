@@ -6,14 +6,22 @@ public class SheepFactory {
 	
 	private SheepFactory() {}
 	
-	public SheepFactory getInstance() {
+	public static SheepFactory getInstance() {
 		if(Instance == null)
-			this.Instance = new SheepFactory();
+			Instance = new SheepFactory();
 		
 		return Instance;
 	}
 	
 	public Sheep makeSheep() {
 		return new Sheep(); //이거저저 추가하기
+	}
+	
+	public Sheep makeMaleSheep() {
+		return new Sheep(SheepSex.valueOf("MALE").ordinal());
+	}
+	
+	public Sheep makeFemaleSheep() {
+		return new Sheep(SheepSex.valueOf("FEMALE").ordinal());
 	}
 }

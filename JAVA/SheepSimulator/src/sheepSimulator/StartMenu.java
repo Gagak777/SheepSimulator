@@ -6,6 +6,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class StartMenu extends JFrame {
 
@@ -25,6 +26,8 @@ public class StartMenu extends JFrame {
 	private LogOutButton logoutButton;
 	private SettingButton settingButton;
 	
+	private Simulator simulator;
+	
 	private StartMenu() {
 		
 		this.backGroundMusic1 = new Music("BackGroundMusic.mp3", true);
@@ -38,13 +41,19 @@ public class StartMenu extends JFrame {
 		this.setVisible(true);
 		this.setBackground(new Color(0, 0, 0, 0));
 		this.setLayout(null);
-
+		
 		this.backGround = new ImageIcon(MainClass.class.getResource("../res/image/backGround.png")).getImage();
+		
+		this.loginButton = new LoginButton();
 		this.exitButton = new ExitButton();
-		
+
+		this.add(loginButton);
 		this.add(exitButton);
+
+		this.backGroundMusic1.start();
+		this.backGroundMusic2.start();
 		
-		this.initMenu();
+		this.simulator = null;
 	}
 
 	public static StartMenu getInstance() {
@@ -54,7 +63,10 @@ public class StartMenu extends JFrame {
 	}
 
 	public void excute() {
-		
+		this.simulator.close();	
+		//기본 배경화면 및 컴포넌트 켜기
+		//기본음악 켜기
+		//로그인상태 화면 띄워주기
 	}
 
 	public void paint(Graphics g) {
@@ -69,13 +81,10 @@ public class StartMenu extends JFrame {
 		this.paintComponents(g);
 		this.repaint();
 	}
-	
-	public void initMenu() {
-		this.backGroundMusic1.start();
-		this.backGroundMusic2.start();
-	}
 
 	public void login() {
+		
+		// 유저 체크하기
 		
 		if(loginedUser != null) {
 			//컴포넌트 교체
@@ -89,16 +98,14 @@ public class StartMenu extends JFrame {
 		loginedUser = null;
 		//컴포넌트 교체
 	}
-
+	
 	public void simulate() {
 		this.backGroundMusic1.close();
 		this.backGroundMusic2.close();
-		//배경화면 및 컴포넌트 전부 닫기
-		
-		Simulator.getInstance().excute();
-		
-		//기본 배경화면 및 컴포넌트 켜기
-		//기본음악 켜기
+		//배경화면 및 컴포넌트 전부 교체
+
+		this.simulator = DataBase.getInstance().getSimulator(loginedUser);
+		this.simulator.excute();
 	}
 
 	public void setting() {
