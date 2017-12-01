@@ -2,8 +2,8 @@ package sheepSimulator;
 
 public class MainClass {
 
-	public static final int S_WIDTH = 1280;
-	public static final int S_HEIGHT = 720;
+	public static final int S_WIDTH = 1920;
+	public static final int S_HEIGHT = 1080;
 	
 	public static int simulateYear = 0;
 	public static boolean pause = false;

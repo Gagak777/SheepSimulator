@@ -6,9 +6,9 @@ public class SheepFactory {
 	
 	private SheepFactory() {}
 	
-	public SheepFactory getInstance() {
+	public static SheepFactory getInstance() {
 		if(Instance == null)
-			this.Instance = new SheepFactory();
+			Instance = new SheepFactory();
 		
 		return Instance;
 	}
