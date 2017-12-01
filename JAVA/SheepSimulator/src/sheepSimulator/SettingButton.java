@@ -15,6 +15,7 @@ public class SettingButton extends Button {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				buttonEntered = new Music("ButtonEntered.mp3");
 				buttonEntered.start();
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -28,6 +29,7 @@ public class SettingButton extends Button {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
 				StartMenu.getInstance().setting();
 			}
