@@ -36,7 +36,7 @@ public class AddSheepButton extends Button {
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
-				//양 추가 인터페이스 구현
+				//양 추가
 			}
 		});
 	}

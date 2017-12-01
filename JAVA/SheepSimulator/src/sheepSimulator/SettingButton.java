@@ -28,6 +28,7 @@ public class SettingButton extends Button {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
 				StartMenu.getInstance().setting();
 			}

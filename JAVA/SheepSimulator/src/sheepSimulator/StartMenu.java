@@ -21,7 +21,6 @@ public class StartMenu extends JFrame {
 	private Music backGroundMusic1;
 	private Music backGroundMusic2;
 	
-	private JPanel titlePanel; // 양 시뮬레이터 제목 패널
 	private ExitButton exitButton;
 	private LoginButton loginButton;
 	private LogOutButton logoutButton;
@@ -99,7 +98,7 @@ public class StartMenu extends JFrame {
 		loginedUser = null;
 		//컴포넌트 교체
 	}
-
+	
 	public void simulate() {
 		this.backGroundMusic1.close();
 		this.backGroundMusic2.close();

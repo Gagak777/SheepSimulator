@@ -33,6 +33,7 @@ public class PauseButton extends Button {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
 				MainClass.pause = !MainClass.pause;
 			}
