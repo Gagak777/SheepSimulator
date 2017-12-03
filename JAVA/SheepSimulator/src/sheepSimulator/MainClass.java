@@ -9,6 +9,7 @@ public class MainClass {
 
 	public static float simulationSpeed = 1;
 	public static int BASE_SPEED = 3;
+	public static int SHEEP_SPEED = 7;
 
 	public static int simulateYear = 0;
 	public static boolean pause = false;

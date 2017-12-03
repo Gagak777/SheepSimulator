@@ -137,8 +137,6 @@ public class StartMenu implements ActionListener {
 		setMainCompVisible(false);
 		Simulator.getInstance().setInfo(DataBase.getInstance().getSimulator(loginedUser));
 		Simulator.getInstance().excute();
-
-		this.excute();
 	}
 
 	public void setting() {

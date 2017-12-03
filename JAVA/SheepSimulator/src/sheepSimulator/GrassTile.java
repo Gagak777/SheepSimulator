@@ -6,7 +6,6 @@ import java.awt.Image;
 public class GrassTile extends Thread {
 
 	private Image grassImage;
-	private String GImg_url;
 	private int grassCap;
 
 	private int loc_x;
@@ -16,12 +15,18 @@ public class GrassTile extends Thread {
 		this.loc_x = loc_x;
 		this.loc_y = loc_y;
 		this.grassCap = 10;
-		// 이미지 초기화
+	}
+	
+	GrassTile(int loc_x, int loc_y, int grassCap) {
+		this.loc_x = loc_x;
+		this.loc_y = loc_y;
+		this.grassCap = grassCap;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
+			//이미지 세팅
 			if (MainClass.pause)
 				continue;
 
@@ -47,10 +52,6 @@ public class GrassTile extends Thread {
 
 	public int get_grassCap() {
 		return this.grassCap;
-	}
-	
-	public String get_imgURL() {
-		return this.GImg_url;
 	}
 
 	public int get_x() {
