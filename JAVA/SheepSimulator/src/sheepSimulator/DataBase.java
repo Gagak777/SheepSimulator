@@ -77,7 +77,7 @@ public class DataBase {
 			String ID;
 			String PW;
 			String name;
-			
+
 			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 			DocumentBuilder parser = f.newDocumentBuilder();
 
@@ -89,12 +89,12 @@ public class DataBase {
 			for (int i = 1; i <= Integer.parseInt(root.getAttribute("userNum")); i++) {
 				NodeList node = root.getElementsByTagName("user" + i);
 				Node userNode = node.item(0);
-				
+
 				NodeList userInfo = userNode.getChildNodes();
-				ID = ((Element)userInfo.item(0)).getTextContent();
-				PW = ((Element)userInfo.item(1)).getTextContent();
-				name = ((Element)userInfo.item(2)).getTextContent();
-				
+				ID = ((Element) userInfo.item(0)).getTextContent();
+				PW = ((Element) userInfo.item(1)).getTextContent();
+				name = ((Element) userInfo.item(2)).getTextContent();
+
 				this.userList.add(new User(ID, PW, name));
 			}
 		} catch (Exception e) {
@@ -103,13 +103,58 @@ public class DataBase {
 	}
 
 	public void readSimulationFile() {
+		try {
+			String simulID;
+			int year;
+			ArrayList<Sheep> sheep = new ArrayList<Sheep>();
+			ArrayList<GrassTile> GTile = new ArrayList<GrassTile>();
 
+			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+			DocumentBuilder parser = f.newDocumentBuilder();
+
+			Document xmlDoc = null;
+			xmlDoc = parser.parse("./src/res/simulations.xml");
+
+			Element root = xmlDoc.getDocumentElement();
+
+			for (int i = 1; i <= Integer.parseInt(root.getAttribute("simulNum")); i++) {
+				NodeList node = root.getElementsByTagName("SIMUL" + i);
+				Node userNode = node.item(0);
+
+				NodeList userInfo = userNode.getChildNodes();
+				simulID = ((Element) userInfo.item(0)).getTextContent();
+				year = Integer.parseInt(((Element) userInfo.item(1)).getTextContent());
+
+				NodeList sheepInfo = userInfo.item(2).getChildNodes();
+				sheep.add(new Sheep(((Element) sheepInfo.item(0)).getTextContent(),
+						Integer.parseInt(((Element) sheepInfo.item(1)).getTextContent()),
+						Integer.parseInt(((Element) sheepInfo.item(2)).getTextContent()),
+						Integer.parseInt(((Element) sheepInfo.item(3)).getTextContent()),
+						Boolean.parseBoolean((((Element) sheepInfo.item(4)).getTextContent())),
+						Integer.parseInt(((Element) sheepInfo.item(5)).getTextContent()),
+						Integer.parseInt(((Element) sheepInfo.item(6)).getTextContent()),
+						Integer.parseInt(((Element) sheepInfo.item(7)).getTextContent()),
+						Integer.parseInt(((Element) sheepInfo.item(8)).getTextContent()),
+						Boolean.parseBoolean((((Element) sheepInfo.item(9)).getTextContent())),
+						Integer.parseInt(((Element) sheepInfo.item(10)).getTextContent()),
+						Integer.parseInt(((Element) sheepInfo.item(11)).getTextContent())));
+
+				NodeList grassInfo = userInfo.item(3).getChildNodes();
+				GTile.add(new GrassTile(Integer.parseInt(((Element) grassInfo.item(0)).getTextContent()),
+						Integer.parseInt(((Element) grassInfo.item(1)).getTextContent()),
+						Integer.parseInt(((Element) grassInfo.item(2)).getTextContent())));
+
+				this.simulList.add(new SimulationData(simulID, year, sheep, GTile));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void saveUserFile() {
 		try {
 			int num = 1;
-			File file = new File(MainClass.class.getResource("../res/users.xml").getFile());
+			File file = new File("./src/res/users.xml");
 			OutputStream outputStream = new FileOutputStream(file);
 			OutputStreamWriter ops = new OutputStreamWriter(outputStream);
 			XMLOutputFactory factory = XMLOutputFactory.newInstance();
@@ -148,7 +193,7 @@ public class DataBase {
 	public void saveSimulationFile() {
 		try {
 			int num, num2 = 1;
-			File file = new File(MainClass.class.getResource("../res/simulations.xml").getFile());
+			File file = new File(("./src/res/simulations.xml"));
 			OutputStream outputStream = new FileOutputStream(file);
 			OutputStreamWriter ops = new OutputStreamWriter(outputStream);
 			XMLOutputFactory factory = XMLOutputFactory.newInstance();
@@ -245,10 +290,6 @@ public class DataBase {
 					xmlW.writeCharacters(String.valueOf(grass.get_grassCap()));
 					xmlW.writeEndElement();
 
-					xmlW.writeStartElement("grassImg");
-					xmlW.writeCharacters(grass.get_imgURL());
-					xmlW.writeEndElement();
-
 					xmlW.writeEndElement();
 					num++;
 				}
@@ -259,6 +300,7 @@ public class DataBase {
 				num2++;
 			}
 			xmlW.writeEndElement();
+			xmlW.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -47,7 +47,7 @@ public class ScreenGraphic extends JFrame {
 	}
 
 	public void imageDraw(Graphics2D g) {
-		g.drawImage(backGround, 0, 0, null);
+		g.drawImage(this.backGround, 0, 0, null);
 		this.paintComponents(g);
 		if (this.isSimulRun) {
 				for (Sheep sheep : Simulator.getInstance().getSheepList()) {

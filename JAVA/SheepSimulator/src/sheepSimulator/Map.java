@@ -9,6 +9,10 @@ public class Map {
 
 	private Map() {
 		tileInfo = new boolean[MainClass.S_WIDTH / tileSize][MainClass.S_WIDTH / tileSize];
+		
+		for(int i = 0; i < MainClass.S_WIDTH / tileSize;i++)
+			for(int j = 0;j<MainClass.S_WIDTH / tileSize;j++)
+				tileInfo[i][j] = true;
 	}
 
 	public static Map getInstance() {
