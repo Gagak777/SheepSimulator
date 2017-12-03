@@ -58,7 +58,7 @@ public class StartMenu implements ActionListener{
 		this.exitButton = new ExitButton();
 		
 		this.logoutButton = new LogoutButton();
-		this.loginButton.setVisible(false);
+		this.logoutButton.setVisible(false);
 		
 		this.settingButton = new SettingButton();
 		this.settingButton.setVisible(false);
@@ -127,7 +127,7 @@ public class StartMenu implements ActionListener{
 		this.backGroundMusic1.close();
 		this.backGroundMusic2.close();
 		//배경화면 및 컴포넌트 전부 교체
-
+		setMainCompVisible(false);
 		Simulator.getInstance().setInfo(DataBase.getInstance().getSimulator(loginedUser));
 		Simulator.getInstance().excute();
 		
@@ -135,7 +135,7 @@ public class StartMenu implements ActionListener{
 	}
 
 	public void setting() {
-
+		
 	}
 
 	private void setLoginTextField() {
@@ -211,10 +211,10 @@ public class StartMenu implements ActionListener{
 			pwTextField.requestFocus();		
 			}
 		if(obj == pwTextField){
-			inputId = idTextField.getText();
 			loginButton.requestFocus();
 		}
 		if(obj == loginButton) {
+			inputId = idTextField.getText();
 			inputPw = String.valueOf(pwTextField.getPassword());
 			login();
 		}
