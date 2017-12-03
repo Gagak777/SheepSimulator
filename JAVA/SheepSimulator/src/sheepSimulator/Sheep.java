@@ -11,7 +11,7 @@ public class Sheep extends Thread {
 
 	private int loc_x; // 저장
 	private int loc_y; // 저장
-	private int vector; // 저장
+	private int vector; // 저장, Radian각도
 	private Queue<Point> route;
 
 	private Image appearance; // 양 외모, 저장
@@ -32,7 +32,7 @@ public class Sheep extends Thread {
 
 	public Sheep() {
 		this(SheepSex.valueOf("RANDOM").ordinal());
-		this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
+		this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();////////////test
 	}
 
 	public Sheep(int sex) {
@@ -154,7 +154,10 @@ public class Sheep extends Thread {
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
 			this.t_count--;
 			// 모션 바꾸기			
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
+			if((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90) || (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();/**/
+			else if(Math.toDegrees(this.vector) >= 90  && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png")).getImage();
 			
 			this.before_clock = this.now_clock;
 		}
@@ -167,7 +170,7 @@ public class Sheep extends Thread {
 		if (this.isExcute == false) {
 			this.isExcute = true;
 			this.t_count = (int) (Math.random() * 2 + 10);
-			this.vector = (int) (Math.random() * 360);
+			this.vector = (int)Math.toRadians(Math.random() * 360); /*라디안각으로 변경*/
 			this.before_clock = System.nanoTime();
 		}
 
@@ -176,23 +179,26 @@ public class Sheep extends Thread {
 		if (this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
 
-			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector) * MainClass.BASE_SPEED,
+			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector) * MainClass.BASE_SPEED, /**/
 					this.loc_y + (int) Math.sin(this.vector) * MainClass.BASE_SPEED)) {
-				this.vector = (int) (Math.random() * 360);
+				this.vector = (int)Math.toRadians(Math.random() * 360); /*라디안각으로 변경*/
 			}
 
-			this.loc_x += (int) (Math.cos(this.vector) * MainClass.SHEEP_SPEED);
+			this.loc_x += (int) (Math.cos(this.vector) * MainClass.SHEEP_SPEED); /**/
 			this.loc_y += (int) (Math.sin(this.vector) * MainClass.SHEEP_SPEED);
 
 			this.t_count--;
 			
 			// 모션 바꾸기
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test			
+			if((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90) || (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();/**/
+			else if(Math.toDegrees(this.vector) >= 90  && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png")).getImage();		
 			
 			this.before_clock = this.now_clock;
 
-			this.loc_x += (int) Math.cos(this.vector);
-			this.loc_y += (int) Math.sin(this.vector);
+			this.loc_x += (int) Math.cos(this.vector); /**/
+			this.loc_y += (int) Math.sin(this.vector); /**/
 		}
 		if (this.t_count == 0)
 			this.isExcute = false;
@@ -210,7 +216,10 @@ public class Sheep extends Thread {
 				- this.before_clock > MainClass.SECOND / (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
 			
 			// 양 먹는 모션
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
+			if((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90) || (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_right.png")).getImage();/**/
+			else if(Math.toDegrees(this.vector) >= 90  && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_left.png")).getImage();
 			
 		} else if (this.route.size() != 0 && this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed))
@@ -229,7 +238,10 @@ public class Sheep extends Thread {
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
 			this.stamina += 6 / MainClass.BASE_SPEED;
 			// 모션 바꾸기
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
+			if((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90) || (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_right.png")).getImage();/**/
+			else if(Math.toDegrees(this.vector) >= 90  && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_left.png")).getImage();
 			
 			this.before_clock = this.now_clock;
 
@@ -245,11 +257,18 @@ public class Sheep extends Thread {
 			this.before_clock = System.nanoTime();
 		}
 		// 사랑하는 모션
-
+		if((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90) || (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_love_right.png")).getImage();/**/
+		else if(Math.toDegrees(this.vector) >= 90  && Math.toDegrees(this.vector) < 270)
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_love_left.png")).getImage();
 	}
 
 	private void death() { // 약간 다르게
 		// 3프레임 죽는모션
+		if((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90) || (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_right.png")).getImage();/**/
+		else if(Math.toDegrees(this.vector) >= 90  && Math.toDegrees(this.vector) < 270)
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_left.png")).getImage();
 	}
 
 	private boolean isDeath() {
@@ -269,7 +288,10 @@ public class Sheep extends Thread {
 			this.loc_y += (int) Math.sin(this.vector);
 
 			// 모션 바꾸기
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
+			if((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90) || (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();/**/
+			else if(Math.toDegrees(this.vector) >= 90  && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png")).getImage();
 			
 			this.before_clock = this.now_clock;
 		}

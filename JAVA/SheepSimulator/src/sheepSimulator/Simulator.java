@@ -42,7 +42,7 @@ public class Simulator {
 		MainClass.simulateYear = this.year;
 		this.flag = true;
 		ScreenGraphic.getInstance()
-				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map01.png")).getImage());
+				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map02.png")).getImage());
 		
 		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
 		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
