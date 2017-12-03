@@ -152,7 +152,9 @@ public class Sheep extends Thread {
 
 		if (this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
+			this.satiety--;
 			this.t_count--;
+			this.stamina--;
 			// 모션 바꾸기			
 			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
 			
@@ -175,6 +177,8 @@ public class Sheep extends Thread {
 
 		if (this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
+			this.satiety -= 2;
+			this.stamina--;
 
 			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector) * MainClass.BASE_SPEED,
 					this.loc_y + (int) Math.sin(this.vector) * MainClass.BASE_SPEED)) {
@@ -260,6 +264,9 @@ public class Sheep extends Thread {
 	}
 
 	private void moveTo() {
+		this.satiety -= 2;
+		this.stamina--;
+		
 		if (route.poll().getX() == this.get_x() && route.poll().getY() == this.get_y()) {
 			route.remove();
 		} else {
