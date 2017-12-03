@@ -101,7 +101,9 @@ public class StartMenu implements ActionListener{
 	}
 
 	public void login() {
-
+		setLoginCompVisible(false);
+		setMainCompVisible(true);
+		/* 로그인 부분 (나중에 지우시오)
 		loginedUser = DataBase.getInstance().identUser(inputId, inputPw);
 		if(loginedUser != null) {
 			//컴포넌트 교체
@@ -114,6 +116,7 @@ public class StartMenu implements ActionListener{
 			idTextField.setText("");
 			pwTextField.setText("");
 		}
+		*/
 	}
 
 	public void logout() {

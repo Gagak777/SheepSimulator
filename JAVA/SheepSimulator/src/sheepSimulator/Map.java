@@ -1,7 +1,7 @@
 package sheepSimulator;
 
 public class Map {
-	private final static int tileSize = 60;
+	private final static int tileSize = 80;
 	
 	private static Map Instance = null;
 

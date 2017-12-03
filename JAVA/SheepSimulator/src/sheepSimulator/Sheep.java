@@ -3,6 +3,8 @@ package sheepSimulator;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+import javax.swing.ImageIcon;
+
 public class Sheep extends Thread {
 
 	private int loc_x; // ¿˙¿Â
@@ -51,6 +53,8 @@ public class Sheep extends Thread {
 		this.vector = 0;
 		this.t_count = 0;
 		this.sheepState = -1;
+		
+		this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();
 	}
 
 	@Override
