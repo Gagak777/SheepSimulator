@@ -50,9 +50,10 @@ public class ScreenGraphic extends JFrame {
 		g.drawImage(backGround, 0, 0, null);
 		this.paintComponents(g);
 		if (this.isSimulRun) {
-			for (Sheep sheep : Simulator.getInstance().getSheepList()) {
-				sheep.drawImage(g);
-			}
+				for (Sheep sheep : Simulator.getInstance().getSheepList()) {
+					sheep.drawImage(g);
+				}
+			
 			for (GrassTile grass : Simulator.getInstance().getGrassList()) {
 				grass.drawImage(g);
 			}

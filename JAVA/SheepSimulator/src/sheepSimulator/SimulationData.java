@@ -11,6 +11,8 @@ public class SimulationData {
 
 	public SimulationData(String simulID) {
 		this.simulID = simulID;
+		this.sheep = new ArrayList<Sheep>();
+		this.GTile = new ArrayList<GrassTile>();
 	}
 
 	public SimulationData(String simulID, int year, ArrayList<Sheep> sheep, ArrayList<GrassTile> GTile) {

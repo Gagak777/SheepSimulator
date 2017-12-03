@@ -25,7 +25,6 @@ public class DataBase {
 	private DataBase() {
 		userList = new ArrayList<User>();
 		simulList = new ArrayList<SimulationData>();
-		userList.add(new User("user1", "pw1", "¼ÕÈñ½Â"));
 	}
 
 	public static DataBase getInstance() {
@@ -36,7 +35,7 @@ public class DataBase {
 
 	public User identUser(String ID, String pw) {
 		for (User user : userList) {
-			if (user.getID() == ID && user.getPassword() == pw) {
+			if (user.getID().equals(ID) && user.getPassword().equals(pw)) {
 				return user;
 			}
 		}
@@ -83,18 +82,18 @@ public class DataBase {
 			DocumentBuilder parser = f.newDocumentBuilder();
 
 			Document xmlDoc = null;
-			xmlDoc = parser.parse("../res/users.xml");
+			xmlDoc = parser.parse("./src/res/users.xml");
 
 			Element root = xmlDoc.getDocumentElement();
 
 			for (int i = 1; i <= Integer.parseInt(root.getAttribute("userNum")); i++) {
-				NodeList node = root.getElementsByTagName("USER" + i);
+				NodeList node = root.getElementsByTagName("user" + i);
 				Node userNode = node.item(0);
 				
 				NodeList userInfo = userNode.getChildNodes();
-				ID = ((Element)userInfo.item(1)).getTextContent();
-				PW = ((Element)userInfo.item(2)).getTextContent();
-				name = ((Element)userInfo.item(3)).getTextContent();
+				ID = ((Element)userInfo.item(0)).getTextContent();
+				PW = ((Element)userInfo.item(1)).getTextContent();
+				name = ((Element)userInfo.item(2)).getTextContent();
 				
 				this.userList.add(new User(ID, PW, name));
 			}

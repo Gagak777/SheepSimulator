@@ -16,6 +16,8 @@ public class Simulator {
 	private long now_time;
 
 	private Simulator() {
+		this.sheep = new ArrayList<Sheep>();
+		this.GTile = new ArrayList<GrassTile>();
 	}
 
 	public static Simulator getInstance() {
@@ -38,10 +40,10 @@ public class Simulator {
 
 		// 화면을 시뮬레이션 화면으로 전환
 		// 메뉴 컴포넌트들 추가
-
 		for (Sheep shp : this.sheep) {
 			shp.start();
 		}
+
 		for (GrassTile gTile : this.GTile) {
 			gTile.start();
 		}
@@ -58,7 +60,7 @@ public class Simulator {
 	}
 
 	public void addSheep() {
-		// 양 설정 컴포넌트 띄울것
+		this.sheep.add(SheepFactory.getInstance().makeSheep());
 	}
 
 	public void close() {

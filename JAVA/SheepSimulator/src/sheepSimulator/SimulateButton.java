@@ -8,7 +8,11 @@ import javax.swing.ImageIcon;
 
 public class SimulateButton extends Button {
 	public SimulateButton() {
-		this.buttonImage = new ImageIcon("../res/image/simulateButton.png");
+		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/simulateButton.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/simulateButton_entered.png"));
+		
+		this.setIcon(this.buttonImage);
+		this.setBounds(555, 375, 840, 192);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
@@ -20,13 +24,13 @@ public class SimulateButton extends Button {
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
-
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setIcon(buttonImage);
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-
+			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
