@@ -3,6 +3,7 @@ package sheepSimulator;
 import java.awt.Image;
 
 public class GrassTile extends Thread {
+	
 	private Image tileImage;
 	private int grassCap;
 

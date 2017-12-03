@@ -36,7 +36,7 @@ public class AddSheepButton extends Button {
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
-				//¾ç Ãß°¡
+				Simulator.getInstance().addSheep();
 			}
 		});
 	}

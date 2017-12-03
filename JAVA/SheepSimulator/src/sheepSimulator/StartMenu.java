@@ -6,7 +6,6 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class StartMenu extends JFrame {
 
@@ -29,31 +28,23 @@ public class StartMenu extends JFrame {
 	private Simulator simulator;
 	
 	private StartMenu() {
-		
 		this.backGroundMusic1 = new Music("BackGroundMusic.mp3", true);
 		this.backGroundMusic2 = new Music("BackGroundMusic_Cry.mp3", true);
-		this.setTitle("Sheep Simulator");
-		this.setUndecorated(true);
-		this.setSize(MainClass.S_WIDTH, MainClass.S_HEIGHT);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setBackground(new Color(0, 0, 0, 0));
-		this.setLayout(null);
 		
 		this.backGround = new ImageIcon(MainClass.class.getResource("../res/image/backGround.png")).getImage();
 		
 		this.loginButton = new LoginButton();
 		this.exitButton = new ExitButton();
 
-		this.add(loginButton);
-		this.add(exitButton);
+		ScreenGraphic.getInstance().add(loginButton);
+		ScreenGraphic.getInstance().add(exitButton);
 
 		this.backGroundMusic1.start();
 		this.backGroundMusic2.start();
 		
 		this.simulator = null;
+		
+		ScreenGraphic.getInstance().setBackground(this.backGround);
 	}
 
 	public static StartMenu getInstance() {
@@ -69,21 +60,8 @@ public class StartMenu extends JFrame {
 		//로그인상태 화면 띄워주기
 	}
 
-	public void paint(Graphics g) {
-		simulatorImage = createImage(MainClass.S_WIDTH, MainClass.S_HEIGHT);
-		simulatorGraphic = simulatorImage.getGraphics();
-		imageDraw(simulatorGraphic);
-		g.drawImage(simulatorImage, 0, 0, null);
-	}
-
-	public void imageDraw(Graphics g) {
-		g.drawImage(backGround, 0, 0, null);
-		this.paintComponents(g);
-		this.repaint();
-	}
-
 	public void login() {
-		
+
 		// 유저 체크하기
 		
 		if(loginedUser != null) {
@@ -104,8 +82,10 @@ public class StartMenu extends JFrame {
 		this.backGroundMusic2.close();
 		//배경화면 및 컴포넌트 전부 교체
 
-		this.simulator = DataBase.getInstance().getSimulator(loginedUser);
-		this.simulator.excute();
+		Simulator.getInstance().setInfo(DataBase.getInstance().getSimulator(loginedUser));
+		Simulator.getInstance().excute();
+		
+		this.excute();
 	}
 
 	public void setting() {

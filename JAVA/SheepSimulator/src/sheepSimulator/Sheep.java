@@ -1,26 +1,30 @@
 package sheepSimulator;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 public class Sheep extends Thread {
 
-	private int loc_x;
-	private int loc_y;
+	private int loc_x; // 저장
+	private int loc_y; // 저장
+	private int vector; // 저장
 
-	private Image appearance; // 양 외모
-	private int satiety; // 포만감
-	private int lifeLimit;
-	private int birth;
-	private int stamina;
-	private boolean sex; // 0: 수컷, 1: 암컷
+	private Image appearance; // 양 외모, 저장
+	private int satiety; // 포만감, 저장
+	private int lifeLimit; // 저장
+	private int birth; // 저장
+	private int stamina; // 저장
+	private boolean sex; // 0: 수컷, 1: 암컷, 저장
 
-	private int t_count; // 양 행동지속 남은 시간
-	private boolean isExcute;
+	private int t_count; // 양 행동지속 남은 시간, 저장
+	private long before_clock;
+	private long now_clock;
+	private boolean isExcute; // 저장
 
-	private int sheepState; // 열거체로 자기 먹기 죽기 구현
+	private int sheepState; // 열거체로 자기 먹기 죽기 구현, 저장
 	private Music cry;
 
-	public Sheep() { // dummy
+	public Sheep() {
 		this(SheepSex.valueOf("RANDOM").ordinal());
 	}
 
@@ -43,24 +47,31 @@ public class Sheep extends Thread {
 		this.stamina = 30;
 		this.lifeLimit = 10 + (int) (Math.random() * 6 - 3);
 		this.isExcute = false;
+
+		this.vector = 0;
+		this.t_count = 0;
+		this.sheepState = -1;
 	}
 
 	@Override
 	public void run() {
 		while (!this.isDeath()) {
-			// 양 행동 구현
 			if (MainClass.pause) { // 게임 일시정지일 경우
 				continue;
 			}
 
-			if (this.stamina == 0) {
+			if (this.stamina == 0 && sheepState != SheepStatus.valueOf("SLEEP").ordinal()) {
 				this.sheepState = SheepStatus.valueOf("SLEEP").ordinal();
-			} else if (this.satiety < 50) {
+				this.isExcute = false;
+			} else if (this.satiety < 50 && sheepState != SheepStatus.valueOf("EAT").ordinal()) {
 				this.sheepState = SheepStatus.valueOf("EAT").ordinal();
-				// count 설정
+				this.isExcute = false;
 			} else if (this.isExcute == false) {
-				this.sheepState = (int) (Math.random() * 4 - 0.1);
-				// count 설정
+				this.sheepState = (int) (Math.random() * 2 - 0.1);
+			}
+
+			if ((int) (Math.random()) * 100 < 3) {
+				this.cry();
 			}
 
 			switch (SheepStatus.values()[this.sheepState]) {
@@ -75,9 +86,12 @@ public class Sheep extends Thread {
 			case LOVE:
 				this.love();
 			}
-
 		}
 		this.death();
+	}
+
+	public void close() {
+		this.interrupt();
 	}
 
 	private void cry() {
@@ -93,55 +107,97 @@ public class Sheep extends Thread {
 
 	private void stand() {
 		if (this.isExcute == false) {
-			// 서 있을 시간설정
+			this.t_count = (int) (Math.random() * 5 + 1) * MainClass.BASE_SPEED;
 			this.isExcute = true;
+			this.before_clock = System.nanoTime();
 		}
-		
-		// 좌표 고정, 제자리에 있는 모션
+
+		this.now_clock = System.nanoTime();
+
+		if (this.now_clock - this.before_clock > MainClass.SECOND
+				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
+			this.t_count--;
+			// 모션 바꾸기
+			this.before_clock = this.now_clock;
+		}
 
 		if (this.t_count == 0)
 			this.isExcute = false;
 	}
 
 	private void walk() {
-		if(this.isExcute == false) {
+		if (this.isExcute == false) {
 			this.isExcute = true;
+			this.t_count = (int) (Math.random() * 2 + 4);
+			this.vector = (int) (Math.random() * 360);
+			this.before_clock = System.nanoTime();
 		}
 		
-		// 양 걷는 모션
+		this.now_clock = System.nanoTime();
+
+		if (this.now_clock - this.before_clock > MainClass.SECOND
+				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
+
+		while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector),
+				this.loc_y + (int) Math.sin(this.vector))) {
+			this.vector = (int) (Math.random() * 360);
+		}
+
+		this.loc_x += (int) Math.cos(this.vector);
+		this.loc_y += (int) Math.sin(this.vector);
+
 		
-		
+			this.t_count--;
+			// 모션 바꾸기
+			this.before_clock = this.now_clock;
+
+			this.loc_x += (int) Math.cos(this.vector);
+			this.loc_y += (int) Math.sin(this.vector);
+		}
 	}
 
 	private void eat() {
-		if(this.isExcute == false) {
+		if (this.isExcute == false) {
 			this.isExcute = true;
+			this.before_clock = System.nanoTime();
 		}
+		// 현재위치에 풀이 없을경우 풀을 찾자
+
 		// 양 먹는 모션
-		
+
 	}
 
 	private void sleep() {
-		if(this.isExcute == false) {
+		if (this.isExcute == false) {
 			this.isExcute = true;
+			this.before_clock = System.nanoTime();
 		}
-		// 양 자는 모션
-		
-		if(this.stamina == 30)
+
+		this.now_clock = System.nanoTime();
+
+		if (this.now_clock - this.before_clock > MainClass.SECOND
+				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
+			this.stamina += 6 / MainClass.BASE_SPEED;
+			// 모션 바꾸기
+			this.before_clock = this.now_clock;
+
+		}
+
+		if (this.stamina == 30)
 			this.isExcute = false;
 	}
 
 	private void love() {
-		if(this.isExcute == false) {
+		if (this.isExcute == false) {
 			this.isExcute = true;
+			this.before_clock = System.nanoTime();
 		}
-		//사랑하는 모션
-		
+		// 사랑하는 모션
 
 	}
 
-	private void death() {
-		// 양이 죽는 모션 넣기
+	private void death() { // 약간 다르게
+		// 3프레임 죽는모션
 	}
 
 	private boolean isDeath() {
@@ -149,6 +205,10 @@ public class Sheep extends Thread {
 			return false;
 		else
 			return true;
+	}
+
+	protected void drawImage(Graphics2D g) {
+		g.drawImage(this.appearance, this.loc_x, this.loc_y, null);
 	}
 
 }
