@@ -155,7 +155,7 @@ public class Sheep extends Thread {
 			this.loc_y += (int) Math.sin(this.vector);
 		}
 	}
-
+	
 	private void eat() {
 		if (this.isExcute == false) {
 			this.isExcute = true;
