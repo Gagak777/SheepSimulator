@@ -6,8 +6,15 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class DataBase {
 	private static DataBase Instance = null;
@@ -18,6 +25,7 @@ public class DataBase {
 	private DataBase() {
 		userList = new ArrayList<User>();
 		simulList = new ArrayList<SimulationData>();
+		userList.add(new User("user1", "pw1", "¼ÕÈñ½Â"));
 	}
 
 	public static DataBase getInstance() {
@@ -66,11 +74,37 @@ public class DataBase {
 	}
 
 	public void readUserFile() {
-		
+		try {
+			String ID;
+			String PW;
+			String name;
+			
+			DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+			DocumentBuilder parser = f.newDocumentBuilder();
+
+			Document xmlDoc = null;
+			xmlDoc = parser.parse("../res/users.xml");
+
+			Element root = xmlDoc.getDocumentElement();
+
+			for (int i = 1; i <= Integer.parseInt(root.getAttribute("userNum")); i++) {
+				NodeList node = root.getElementsByTagName("USER" + i);
+				Node userNode = node.item(0);
+				
+				NodeList userInfo = userNode.getChildNodes();
+				ID = ((Element)userInfo.item(1)).getTextContent();
+				PW = ((Element)userInfo.item(2)).getTextContent();
+				name = ((Element)userInfo.item(3)).getTextContent();
+				
+				this.userList.add(new User(ID, PW, name));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	public void readSimulationFile() {
-		
+
 	}
 
 	public void saveUserFile() {
@@ -84,6 +118,7 @@ public class DataBase {
 
 			xmlW.writeStartDocument("MS949", "1.0");
 			xmlW.writeStartElement("userList");
+			xmlW.writeAttribute("userNum", String.valueOf(this.userList.size()));
 
 			for (User user : this.userList) {
 
@@ -102,9 +137,9 @@ public class DataBase {
 				xmlW.writeEndElement();
 
 				xmlW.writeEndElement();
-
 			}
 			xmlW.writeEndElement();
+			xmlW.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,7 +148,7 @@ public class DataBase {
 
 	public void saveSimulationFile() {
 		try {
-			int num;
+			int num, num2 = 1;
 			File file = new File(MainClass.class.getResource("../res/simulations.xml").getFile());
 			OutputStream outputStream = new FileOutputStream(file);
 			OutputStreamWriter ops = new OutputStreamWriter(outputStream);
@@ -122,10 +157,15 @@ public class DataBase {
 
 			xmlW.writeStartDocument("MS949", "1.0");
 			xmlW.writeStartElement("simulationList");
+			xmlW.writeAttribute("simulNum", String.valueOf(this.userList.size()));
 
 			for (SimulationData simulData : this.simulList) {
 
+				xmlW.writeStartElement("SIMUL" + num2);
+
+				xmlW.writeStartElement("SIMUL_ID");
 				xmlW.writeStartElement(simulData.getSimulID());
+				xmlW.writeEndElement();
 
 				xmlW.writeStartElement("YEAR");
 				xmlW.writeCharacters(String.valueOf(simulData.getYear()));
@@ -139,7 +179,7 @@ public class DataBase {
 					xmlW.writeStartElement("appearance");
 					xmlW.writeCharacters(sheep.get_appURL());
 					xmlW.writeEndElement();
-					
+
 					xmlW.writeStartElement("loc_x");
 					xmlW.writeCharacters(String.valueOf(sheep.get_x()));
 					xmlW.writeEndElement();
@@ -151,7 +191,7 @@ public class DataBase {
 					xmlW.writeStartElement("birth");
 					xmlW.writeCharacters(String.valueOf(sheep.get_birth()));
 					xmlW.writeEndElement();
-				
+
 					xmlW.writeStartElement("sex");
 					xmlW.writeCharacters(String.valueOf(sheep.get_sex()));
 					xmlW.writeEndElement();
@@ -167,7 +207,7 @@ public class DataBase {
 					xmlW.writeStartElement("stamina");
 					xmlW.writeCharacters(String.valueOf(sheep.get_stamina()));
 					xmlW.writeEndElement();
-					
+
 					xmlW.writeStartElement("state");
 					xmlW.writeCharacters(String.valueOf(sheep.get_sheepState()));
 					xmlW.writeEndElement();
@@ -183,40 +223,41 @@ public class DataBase {
 					xmlW.writeStartElement("vector");
 					xmlW.writeCharacters(String.valueOf(sheep.get_vector()));
 					xmlW.writeEndElement();
-					
+
 					xmlW.writeEndElement();
 					num++;
 				}
 				xmlW.writeEndElement();
 
 				num = 1;
-				xmlW.writeStartElement("GRASSES");				
-				for(GrassTile grass : simulData.getGTile()) {
+				xmlW.writeStartElement("GRASSES");
+				for (GrassTile grass : simulData.getGTile()) {
 					xmlW.writeStartElement("GRASS" + num);
-					
+
 					xmlW.writeStartElement("loc_x");
 					xmlW.writeCharacters(String.valueOf(grass.get_x()));
 					xmlW.writeEndElement();
-					
+
 					xmlW.writeStartElement("loc_y");
 					xmlW.writeCharacters(String.valueOf(grass.get_y()));
 					xmlW.writeEndElement();
-					
+
 					xmlW.writeStartElement("grassCap");
 					xmlW.writeCharacters(String.valueOf(grass.get_grassCap()));
 					xmlW.writeEndElement();
-					
+
 					xmlW.writeStartElement("grassImg");
 					xmlW.writeCharacters(grass.get_imgURL());
 					xmlW.writeEndElement();
-					
+
 					xmlW.writeEndElement();
 					num++;
-				}			
-				xmlW.writeEndElement();
-				
+				}
 				xmlW.writeEndElement();
 
+				xmlW.writeEndElement();
+
+				num2++;
 			}
 			xmlW.writeEndElement();
 		} catch (Exception e) {

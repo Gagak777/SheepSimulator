@@ -37,6 +37,8 @@ public class ExitButton extends Button {
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
+				DataBase.getInstance().saveUserFile();
+				DataBase.getInstance().saveSimulationFile();;
 				try {
 					Thread.sleep(700);
 				} catch (Exception ex) {
