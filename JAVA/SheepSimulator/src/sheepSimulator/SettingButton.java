@@ -8,7 +8,11 @@ import javax.swing.ImageIcon;
 
 public class SettingButton extends Button {
 	SettingButton() {
-		this.buttonImage = new ImageIcon("../res/image/settingButton.png");
+		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/settingButton.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/settingButton_entered.png"));
+		
+		this.setIcon(this.buttonImage);
+		this.setBounds(555, 593, 840, 192);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);

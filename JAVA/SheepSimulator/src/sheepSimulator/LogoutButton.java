@@ -6,10 +6,13 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 
-public class LogOutButton extends Button {
-	public LogOutButton() {
-		this.buttonImage = new ImageIcon("../res/image/logoutButton.png");
+public class LogoutButton extends Button {
+	public LogoutButton() {
+		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/logoutButton.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/logoutButton_entered.png"));
 		
+		this.setIcon(this.buttonImage);
+		this.setBounds(555, 811, 840, 192);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);

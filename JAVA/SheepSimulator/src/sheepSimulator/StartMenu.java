@@ -28,6 +28,8 @@ public class StartMenu implements ActionListener{
 	
 	private Font textFont;
 	
+	private ImageIcon TextFieldImage;
+	
 	private JLabel idImageLabel;
 	private ImageIcon idImage;
 	private JTextField idTextField;
@@ -38,12 +40,11 @@ public class StartMenu implements ActionListener{
 	private JPasswordField pwTextField;
 	private JLabel pwTextFieldLabel;
 	
-	private ImageIcon TextFieldImage;
-
 	private ExitButton exitButton;
 	private LoginButton loginButton;
-	private LogOutButton logoutButton;
+	private LogoutButton logoutButton;
 	private SettingButton settingButton;
+	private SimulateButton simulateButton;
 	
 	private Simulator simulator;
 	
@@ -56,10 +57,22 @@ public class StartMenu implements ActionListener{
 		this.loginButton = new LoginButton();
 		this.exitButton = new ExitButton();
 		
-		setMainLabel();
-		setTextField();
+		this.logoutButton = new LogoutButton();
+		this.loginButton.setVisible(false);
+		
+		this.settingButton = new SettingButton();
+		this.settingButton.setVisible(false);
+		
+		this.simulateButton = new SimulateButton();
+		this.simulateButton.setVisible(false);
+		
+		setLoginLabel();
+		setLoginTextField();
 		
 		ScreenGraphic.getInstance().add(loginButton);
+		ScreenGraphic.getInstance().add(logoutButton);
+		ScreenGraphic.getInstance().add(simulateButton);
+		ScreenGraphic.getInstance().add(settingButton);
 		ScreenGraphic.getInstance().add(exitButton);
 		ScreenGraphic.getInstance().add(idTextFieldLabel);
 		ScreenGraphic.getInstance().add(pwTextFieldLabel);
@@ -92,7 +105,8 @@ public class StartMenu implements ActionListener{
 		loginedUser = DataBase.getInstance().identUser(inputId, inputPw);
 		if(loginedUser != null) {
 			//컴포넌트 교체
-			setCompVisible(true);
+			setLoginCompVisible(false);
+			setMainCompVisible(true);
 		}
 		else {
 			inputId = "";
@@ -105,7 +119,8 @@ public class StartMenu implements ActionListener{
 	public void logout() {
 		loginedUser = null;
 		//컴포넌트 교체
-		setCompVisible(false);
+		setMainCompVisible(false);
+		setLoginCompVisible(true);
 	}
 	
 	public void simulate() {
@@ -123,7 +138,7 @@ public class StartMenu implements ActionListener{
 
 	}
 
-	private void setTextField() {
+	private void setLoginTextField() {
 
 		this.textFont = new Font("default",Font.PLAIN,70);
 		this.TextFieldImage = new ImageIcon(MainClass.class.getResource("../res/image/blank.png"));
@@ -159,7 +174,7 @@ public class StartMenu implements ActionListener{
 		this.pwTextFieldLabel.add(pwTextField);
 	}
 	
-	private void setMainLabel() {
+	private void setLoginLabel() {
 		this.idImage = new ImageIcon(MainClass.class.getResource("../res/image/id.png"));
 		this.idImageLabel = new JLabel(idImage);
 		this.idImageLabel.setSize(idImage.getImage().getWidth(null), idImage.getImage().getHeight(null));
@@ -171,7 +186,13 @@ public class StartMenu implements ActionListener{
 		this.pwImageLabel.setLocation(309,542);
 	}
 	
-	private void setCompVisible(boolean flag)
+	private void setMainCompVisible(boolean flag) {
+		simulateButton.setVisible(flag);
+		settingButton.setVisible(flag);
+		logoutButton.setVisible(flag);
+	}
+	
+	private void setLoginCompVisible(boolean flag)
 	{
 		loginButton.setVisible(flag);
 		exitButton.setVisible(flag);
