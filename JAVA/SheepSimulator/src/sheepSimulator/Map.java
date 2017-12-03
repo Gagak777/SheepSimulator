@@ -2,7 +2,7 @@ package sheepSimulator;
 
 public class Map {
 	private final static int tileSize = 60;
-	
+
 	private static Map Instance = null;
 
 	private boolean[][] tileInfo;
@@ -10,9 +10,9 @@ public class Map {
 	private Map() {
 		tileInfo = new boolean[MainClass.S_WIDTH / tileSize][MainClass.S_WIDTH / tileSize];
 	}
-	
+
 	public static Map getInstance() {
-		if(Instance == null)
+		if (Instance == null)
 			Instance = new Map();
 		return Instance;
 	}

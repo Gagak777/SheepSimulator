@@ -7,10 +7,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 
 public class LoginButton extends Button {
-	public LoginButton(){
+	public LoginButton() {
 		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/loginButton.png"));
 		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/loginButton_entered.png"));
-		
+
 		this.setIcon(this.buttonImage);
 		this.setBounds(850, 250, 200, 152);
 		this.setBorderPainted(false);
@@ -24,13 +24,13 @@ public class LoginButton extends Button {
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setIcon(buttonImage);
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");

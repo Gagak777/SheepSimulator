@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 public class LogOutButton extends Button {
 	public LogOutButton() {
 		this.buttonImage = new ImageIcon("../res/image/logoutButton.png");
-		
+
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
@@ -21,13 +21,13 @@ public class LogOutButton extends Button {
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setIcon(buttonImage);
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");

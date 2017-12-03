@@ -10,11 +10,11 @@ import javax.swing.JFrame;
 public class ScreenGraphic extends JFrame {
 	private static ScreenGraphic Instance;
 	protected boolean isSimulRun = false;
-	
+
 	private Image backGround;
 	private Image simulatorImage;
 	private Graphics2D simulatorGraphic;
-	
+
 	private ScreenGraphic() {
 		this.setTitle("Sheep Simulator");
 		this.setUndecorated(true);
@@ -26,18 +26,18 @@ public class ScreenGraphic extends JFrame {
 		this.setBackground(new Color(0, 0, 0, 0));
 		this.setLayout(null);
 	}
-	
+
 	public static ScreenGraphic getInstance() {
-		if(Instance == null) {
+		if (Instance == null) {
 			Instance = new ScreenGraphic();
 		}
 		return Instance;
 	}
-	
+
 	public void setBackGround(Image backGround) {
 		this.backGround = backGround;
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		simulatorImage = createImage(MainClass.S_WIDTH, MainClass.S_HEIGHT);
@@ -49,12 +49,15 @@ public class ScreenGraphic extends JFrame {
 	public void imageDraw(Graphics2D g) {
 		g.drawImage(backGround, 0, 0, null);
 		this.paintComponents(g);
-		if(this.isSimulRun) {
-			for(Sheep sheep : Simulator.getInstance().getSheepList()) {
+		if (this.isSimulRun) {
+			for (Sheep sheep : Simulator.getInstance().getSheepList()) {
 				sheep.drawImage(g);
+			}
+			for (GrassTile grass : Simulator.getInstance().getGrassList()) {
+				grass.drawImage(g);
 			}
 		}
 		this.repaint();
 	}
-	
+
 }

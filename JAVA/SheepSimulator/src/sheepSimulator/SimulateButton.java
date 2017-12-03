@@ -20,13 +20,13 @@ public class SimulateButton extends Button {
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setIcon(buttonImage);
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");

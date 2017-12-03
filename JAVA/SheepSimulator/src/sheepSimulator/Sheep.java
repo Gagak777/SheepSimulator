@@ -3,6 +3,8 @@ package sheepSimulator;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+import javax.swing.ImageIcon;
+
 public class Sheep extends Thread {
 
 	private int loc_x; // 저장
@@ -10,6 +12,7 @@ public class Sheep extends Thread {
 	private int vector; // 저장
 
 	private Image appearance; // 양 외모, 저장
+	private String app_url; // 양 이미지 url
 	private int satiety; // 포만감, 저장
 	private int lifeLimit; // 저장
 	private int birth; // 저장
@@ -51,6 +54,22 @@ public class Sheep extends Thread {
 		this.vector = 0;
 		this.t_count = 0;
 		this.sheepState = -1;
+	}
+
+	public Sheep(String appearance, int loc_x, int loc_y, int birth, boolean sex, int lifeLimit, int satiety,
+			int stamina, int sheepState, boolean isExcute, int count, int vector) {
+		this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/" + appearance)).getImage();
+		this.loc_x = loc_x;
+		this.loc_y = loc_y;
+		this.birth = birth;
+		this.sex = sex;
+		this.lifeLimit = lifeLimit;
+		this.satiety = satiety;
+		this.stamina = stamina;
+		this.sheepState = sheepState;
+		this.isExcute = isExcute;
+		this.t_count = count;
+		this.vector = vector;
 	}
 
 	@Override
@@ -132,21 +151,20 @@ public class Sheep extends Thread {
 			this.vector = (int) (Math.random() * 360);
 			this.before_clock = System.nanoTime();
 		}
-		
+
 		this.now_clock = System.nanoTime();
 
 		if (this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
 
-		while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector),
-				this.loc_y + (int) Math.sin(this.vector))) {
-			this.vector = (int) (Math.random() * 360);
-		}
+			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector),
+					this.loc_y + (int) Math.sin(this.vector))) {
+				this.vector = (int) (Math.random() * 360);
+			}
 
-		this.loc_x += (int) Math.cos(this.vector);
-		this.loc_y += (int) Math.sin(this.vector);
+			this.loc_x += (int) Math.cos(this.vector);
+			this.loc_y += (int) Math.sin(this.vector);
 
-		
 			this.t_count--;
 			// 모션 바꾸기
 			this.before_clock = this.now_clock;
@@ -155,7 +173,7 @@ public class Sheep extends Thread {
 			this.loc_y += (int) Math.sin(this.vector);
 		}
 	}
-	
+
 	private void eat() {
 		if (this.isExcute == false) {
 			this.isExcute = true;
@@ -211,4 +229,51 @@ public class Sheep extends Thread {
 		g.drawImage(this.appearance, this.loc_x, this.loc_y, null);
 	}
 
+	public int get_x() {
+		return this.loc_x;
+	}
+
+	public int get_y() {
+		return this.loc_y;
+	}
+
+	public int get_vector() {
+		return this.vector;
+	}
+
+	public String get_appURL() {
+		return this.app_url;
+	}
+
+	public int get_satiety() {
+		return this.satiety;
+	}
+
+	public int get_lifeLimit() {
+		return this.lifeLimit;
+	}
+
+	public int get_birth() {
+		return this.birth;
+	}
+
+	public int get_stamina() {
+		return this.stamina;
+	}
+
+	public boolean get_sex() {
+		return this.sex;
+	}
+
+	public int get_count() {
+		return this.t_count;
+	}
+
+	public boolean get_isExcute() {
+		return this.isExcute;
+	}
+
+	public int get_sheepState() {
+		return this.sheepState;
+	}
 }

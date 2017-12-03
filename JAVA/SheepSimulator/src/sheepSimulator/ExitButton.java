@@ -7,12 +7,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 
 public class ExitButton extends Button {
-	
+
 	public ExitButton() {
-		
+
 		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/quit.png"));
 		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/quit_entered.png"));
-		
+
 		this.setIcon(this.buttonImage);
 		this.setBounds(375, 470, 535, 120);
 		this.setBorderPainted(false);
@@ -26,20 +26,20 @@ public class ExitButton extends Button {
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setIcon(buttonImage);
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
 				try {
 					Thread.sleep(700);
-				} catch(Exception ex) {
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 				System.exit(0);

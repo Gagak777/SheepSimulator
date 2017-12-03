@@ -2,8 +2,6 @@ package sheepSimulator;
 
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
 public class Simulator {
 
 	private static Simulator Instance = null;
@@ -76,5 +74,9 @@ public class Simulator {
 
 	public ArrayList<Sheep> getSheepList() {
 		return this.sheep;
+	}
+
+	public ArrayList<GrassTile> getGrassList() {
+		return this.GTile;
 	}
 }
