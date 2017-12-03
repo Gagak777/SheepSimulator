@@ -12,7 +12,7 @@ public class LoginButton extends Button {
 		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/loginButton_entered.png"));
 		
 		this.setIcon(this.buttonImage);
-		this.setBounds(850, 250, 200, 152);
+		this.setBounds(1312, 410, 310, 235);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
