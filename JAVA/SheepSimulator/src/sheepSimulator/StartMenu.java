@@ -1,13 +1,12 @@
 package sheepSimulator;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-public class StartMenu extends JFrame {
+public class StartMenu {
 
 	private Image simulatorImage;
 	private Graphics simulatorGraphic;
@@ -44,7 +43,7 @@ public class StartMenu extends JFrame {
 		
 		this.simulator = null;
 		
-		ScreenGraphic.getInstance().setBackground(this.backGround);
+		ScreenGraphic.getInstance().setBackGround(this.backGround);
 	}
 
 	public static StartMenu getInstance() {

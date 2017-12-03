@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-public class Simulator extends JFrame {
+public class Simulator {
 
 	private static Simulator Instance = null;
 
