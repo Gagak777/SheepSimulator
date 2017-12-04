@@ -3,8 +3,6 @@ package sheepSimulator;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import javax.swing.ImageIcon;
-
 public class GrassTile extends Thread {
 
 	private Image grassImage;
@@ -14,20 +12,12 @@ public class GrassTile extends Thread {
 	private int loc_y;
 
 	GrassTile(int loc_x, int loc_y) {
-		this.grassImage = new ImageIcon(MainClass.class.getResource("../res/image/grass_3.png")).getImage();
 		this.loc_x = loc_x;
 		this.loc_y = loc_y;
 		this.grassCap = 10;
 	}
 	
 	GrassTile(int loc_x, int loc_y, int grassCap) {
-		
-		if(grassCap > 0 && grassCap <= 3)
-			this.grassImage = new ImageIcon(MainClass.class.getResource("../res/image/grass_1.png")).getImage();
-		else if (grassCap > 3 && grassCap <= 7)
-			this.grassImage = new ImageIcon(MainClass.class.getResource("../res/image/grass_2.png")).getImage();
-		else if (grassCap > 7 && grassCap <= 10)
-			this.grassImage = new ImageIcon(MainClass.class.getResource("../res/image/grass_3.png")).getImage();
 		this.loc_x = loc_x;
 		this.loc_y = loc_y;
 		this.grassCap = grassCap;

@@ -2,11 +2,10 @@ package sheepSimulator;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 
-public class Simulator {
+public class Simulator extends Thread {
 
 	private static Simulator Instance = null;
 
@@ -37,12 +36,12 @@ public class Simulator {
 		this.GTile = simulData.getGTile();
 	}
 
-	public void excute() {
+	public void run() {
 		ScreenGraphic.getInstance().isSimulRun = true;
 		MainClass.simulateYear = this.year;
 		this.flag = true;
 		ScreenGraphic.getInstance()
-				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map02.png")).getImage());
+				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map01.png")).getImage());
 		
 		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
 		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
@@ -64,13 +63,13 @@ public class Simulator {
 			this.now_time = System.nanoTime();
 
 			try {
-				this.wait(100);
+					this.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			if (this.now_time - this.before_time > MainClass.SECOND * 10) {
+			if (this.now_time - this.before_time > MainClass.SECOND * 10 / MainClass.simulationSpeed) {
 				MainClass.simulateYear++;
 				this.before_time = this.now_time;
 			}
@@ -86,6 +85,8 @@ public class Simulator {
 				.saveSimul(new SimulationData(this.simulID, MainClass.simulateYear, this.sheep, this.GTile));
 		this.flag = false;
 		ScreenGraphic.getInstance().isSimulRun = false;
+		
+		this.interrupt();
 	}
 
 	public GrassTile nearGrass(int x, int y) {

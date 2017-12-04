@@ -6,15 +6,13 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 
-public class ExitButton extends Button {
-
-	public ExitButton() {
-
-		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/quit.png"));
-		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/quit_entered.png"));
-
+public class SimulationExitButton extends Button {
+	public SimulationExitButton() {
+		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/logoutButton.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/logoutButton_entered.png"));
+		
 		this.setIcon(this.buttonImage);
-		this.setBounds(555, 740, 840, 192);
+		//this.setBounds(555, 811, 840, 192);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
@@ -26,25 +24,19 @@ public class ExitButton extends Button {
 				setIcon(buttonEnteredImage);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
-
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
 				setIcon(buttonImage);
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-
+			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
-				DataBase.getInstance().saveUserFile();
-				DataBase.getInstance().saveSimulationFile();;
-				try {
-					Thread.sleep(700);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				System.exit(0);
+				Simulator.getInstance().close();
+				StartMenu.getInstance().excute();
 			}
 		});
 	}
