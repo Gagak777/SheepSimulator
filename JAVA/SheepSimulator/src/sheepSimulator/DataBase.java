@@ -44,13 +44,13 @@ public class DataBase {
 
 	public SimulationData getSimulator(User loginedUser) {
 		SimulationData nowSimul = null;
-
+/*
 		for (SimulationData simul : this.simulList) {
-			if (simul.getSimulID() == loginedUser.getID()) {
+			if (simul.getSimulID().equals(loginedUser.getID())) {
 				nowSimul = simul;
 				break;
 			}
-		}
+		}*/
 		if (nowSimul == null) {
 			nowSimul = new SimulationData(loginedUser.getID());
 		}
@@ -125,26 +125,37 @@ public class DataBase {
 				simulID = ((Element) userInfo.item(0)).getTextContent();
 				year = Integer.parseInt(((Element) userInfo.item(1)).getTextContent());
 
-				NodeList sheepInfo = userInfo.item(2).getChildNodes();
-				sheep.add(new Sheep(((Element) sheepInfo.item(0)).getTextContent(),
-						Integer.parseInt(((Element) sheepInfo.item(1)).getTextContent()),
-						Integer.parseInt(((Element) sheepInfo.item(2)).getTextContent()),
-						Integer.parseInt(((Element) sheepInfo.item(3)).getTextContent()),
-						Boolean.parseBoolean((((Element) sheepInfo.item(4)).getTextContent())),
-						Integer.parseInt(((Element) sheepInfo.item(5)).getTextContent()),
-						Integer.parseInt(((Element) sheepInfo.item(6)).getTextContent()),
-						Integer.parseInt(((Element) sheepInfo.item(7)).getTextContent()),
-						Integer.parseInt(((Element) sheepInfo.item(8)).getTextContent()),
-						Boolean.parseBoolean((((Element) sheepInfo.item(9)).getTextContent())),
-						Integer.parseInt(((Element) sheepInfo.item(10)).getTextContent()),
-						Integer.parseInt(((Element) sheepInfo.item(11)).getTextContent())));
+				NodeList sheepList = userInfo.item(2).getChildNodes();
 
-				NodeList grassInfo = userInfo.item(3).getChildNodes();
-				GTile.add(new GrassTile(Integer.parseInt(((Element) grassInfo.item(0)).getTextContent()),
-						Integer.parseInt(((Element) grassInfo.item(1)).getTextContent()),
-						Integer.parseInt(((Element) grassInfo.item(2)).getTextContent())));
+				// 양 개수 추가
+				NodeList sheepInfo = null;
+				for (int j = 0; j < Integer.parseInt(((Element) sheepList).getAttribute("SheepNum")); j++) {
+					sheepInfo = sheepList.item(i).getChildNodes();
 
-				this.simulList.add(new SimulationData(simulID, year, sheep, GTile));
+					sheep.add(new Sheep(((Element) sheepInfo.item(0)).getTextContent(),
+							Integer.parseInt(((Element) sheepInfo.item(1)).getTextContent()),
+							Integer.parseInt(((Element) sheepInfo.item(2)).getTextContent()),
+							Integer.parseInt(((Element) sheepInfo.item(3)).getTextContent()),
+							Boolean.parseBoolean((((Element) sheepInfo.item(4)).getTextContent())),
+							Integer.parseInt(((Element) sheepInfo.item(5)).getTextContent()),
+							Integer.parseInt(((Element) sheepInfo.item(6)).getTextContent()),
+							Integer.parseInt(((Element) sheepInfo.item(7)).getTextContent()),
+							Integer.parseInt(((Element) sheepInfo.item(8)).getTextContent()),
+							Boolean.parseBoolean((((Element) sheepInfo.item(9)).getTextContent())),
+							Integer.parseInt(((Element) sheepInfo.item(10)).getTextContent()),
+							Integer.parseInt(((Element) sheepInfo.item(11)).getTextContent())));
+
+				}
+				NodeList grassList = userInfo.item(3).getChildNodes();
+				NodeList grassInfo = null;
+				for (int j = 0; j < Integer.parseInt(((Element) grassList).getAttribute("GrassNum")); j++) {
+					grassInfo = grassList.item(i).getChildNodes();
+					GTile.add(new GrassTile(Integer.parseInt(((Element) grassInfo.item(0)).getTextContent()),
+							Integer.parseInt(((Element) grassInfo.item(1)).getTextContent()),
+							Integer.parseInt(((Element) grassInfo.item(2)).getTextContent())));
+
+					this.simulList.add(new SimulationData(simulID, year, sheep, GTile));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -208,7 +219,7 @@ public class DataBase {
 				xmlW.writeStartElement("SIMUL" + num2);
 
 				xmlW.writeStartElement("SIMUL_ID");
-				xmlW.writeStartElement(simulData.getSimulID());
+				xmlW.writeCharacters(simulData.getSimulID());
 				xmlW.writeEndElement();
 
 				xmlW.writeStartElement("YEAR");
@@ -217,6 +228,7 @@ public class DataBase {
 
 				num = 1;
 				xmlW.writeStartElement("SHEEPS");
+				xmlW.writeAttribute("SheepNum", String.valueOf(simulData.getSheep().size()));
 				for (Sheep sheep : simulData.getSheep()) {
 					xmlW.writeStartElement("SHEEP" + num);
 
@@ -275,6 +287,7 @@ public class DataBase {
 
 				num = 1;
 				xmlW.writeStartElement("GRASSES");
+				xmlW.writeAttribute("GrassNum", String.valueOf(simulData.getGTile().size()));
 				for (GrassTile grass : simulData.getGTile()) {
 					xmlW.writeStartElement("GRASS" + num);
 

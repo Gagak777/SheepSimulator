@@ -9,6 +9,11 @@ public class Simulator extends Thread {
 
 	private static Simulator Instance = null;
 
+	private SimulationExitButton simulationExitButton;
+	private SlowButton slowButton;
+	private FastButton fastButton;
+	private AddSheepButton addButton;
+
 	private ArrayList<Sheep> sheep;
 	private ArrayList<GrassTile> GTile;
 	private String simulID;
@@ -19,6 +24,16 @@ public class Simulator extends Thread {
 	private long now_time;
 
 	private Simulator() {
+
+		this.simulationExitButton = new SimulationExitButton();
+		ScreenGraphic.getInstance().add(simulationExitButton);
+		this.slowButton = new SlowButton();
+		ScreenGraphic.getInstance().add(slowButton);
+		this.fastButton = new FastButton();
+		ScreenGraphic.getInstance().add(fastButton);
+		this.addButton = new AddSheepButton();
+		ScreenGraphic.getInstance().add(this.addButton);
+
 		this.sheep = new ArrayList<Sheep>();
 		this.GTile = new ArrayList<GrassTile>();
 	}
@@ -29,10 +44,18 @@ public class Simulator extends Thread {
 		return Instance;
 	}
 
+	public static Simulator getInstance(boolean flag) {
+		if (flag || Instance == null)
+			Instance = new Simulator();
+		return Instance;
+	}
+
 	public void setInfo(SimulationData simulData) {
 		this.simulID = simulData.getSimulID();
 		this.year = simulData.getYear();
-		this.sheep = simulData.getSheep();
+		
+		for(int i = 0; i < simulData.getSheep().size();i++)
+			this.sheep.add((Sheep)simulData.getSheep().get(i).clone());
 		this.GTile = simulData.getGTile();
 	}
 
@@ -41,15 +64,12 @@ public class Simulator extends Thread {
 		MainClass.simulateYear = this.year;
 		this.flag = true;
 		ScreenGraphic.getInstance()
-				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map01.png")).getImage());
+				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map02.png")).getImage());
 		
-		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
-		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
-		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
-		this.sheep.add(SheepFactory.getInstance().makeSheep());/////////////////////////////////////test
+		//메뉴 컴포넌트 추가
 		
-		// 화면을 시뮬레이션 화면으로 전환
-		// 메뉴 컴포넌트들 추가
+		
+		
 		for (Sheep shp : this.sheep) {
 			shp.start();
 		}
@@ -63,12 +83,12 @@ public class Simulator extends Thread {
 			this.now_time = System.nanoTime();
 
 			try {
-					this.sleep(100);
+				this.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			if (this.now_time - this.before_time > MainClass.SECOND * 10 / MainClass.simulationSpeed) {
 				MainClass.simulateYear++;
 				this.before_time = this.now_time;
@@ -77,16 +97,22 @@ public class Simulator extends Thread {
 	}
 
 	public void addSheep() {
-		this.sheep.add(SheepFactory.getInstance().makeSheep());
+		Sheep newSheep = SheepFactory.getInstance().makeSheep();
+		this.sheep.add(newSheep);
+		newSheep.start();
 	}
 
 	public void close() {
+
+		this.simulationExitButton.setVisible(false);
+		this.slowButton.setVisible(false);
+		this.fastButton.setVisible(false);
+		this.addButton.setVisible(false);
+		
 		DataBase.getInstance()
 				.saveSimul(new SimulationData(this.simulID, MainClass.simulateYear, this.sheep, this.GTile));
 		this.flag = false;
 		ScreenGraphic.getInstance().isSimulRun = false;
-		
-		this.interrupt();
 	}
 
 	public GrassTile nearGrass(int x, int y) {

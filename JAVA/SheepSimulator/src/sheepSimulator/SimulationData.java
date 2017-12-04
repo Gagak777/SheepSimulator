@@ -13,6 +13,10 @@ public class SimulationData {
 		this.simulID = simulID;
 		this.sheep = new ArrayList<Sheep>();
 		this.GTile = new ArrayList<GrassTile>();
+		this.GTile.add(new GrassTile(970, 180));
+		this.GTile.add(new GrassTile(1050, 180));
+		this.GTile.add(new GrassTile(1130, 180));
+		this.GTile.add(new GrassTile(970, 260));
 	}
 
 	public SimulationData(String simulID, int year, ArrayList<Sheep> sheep, ArrayList<GrassTile> GTile) {

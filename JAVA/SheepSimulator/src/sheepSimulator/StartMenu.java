@@ -45,8 +45,6 @@ public class StartMenu implements ActionListener {
 	private SettingButton settingButton;
 	private SimulateButton simulateButton;
 
-	private Simulator simulator;
-
 	private StartMenu() {
 		DataBase.getInstance().readUserFile();
 		DataBase.getInstance().readSimulationFile();
@@ -84,8 +82,6 @@ public class StartMenu implements ActionListener {
 		this.backGroundMusic1.start();
 		this.backGroundMusic2.start();
 
-		this.simulator = null;
-
 		ScreenGraphic.getInstance().setBackGround(this.backGround);
 	}
 
@@ -96,9 +92,10 @@ public class StartMenu implements ActionListener {
 	}
 
 	public void excute() {
-		this.simulator.close();
-		// 기본 배경화면 및 컴포넌트 켜기
-
+		Simulator.getInstance().close();
+		ScreenGraphic.getInstance().setBackGround(this.backGround);
+		setMainCompVisible(true);
+		
 		this.backGroundMusic1 = new Music("BackGroundMusic.mp3", true);
 		this.backGroundMusic2 = new Music("BackGroundMusic_Cry.mp3", true);
 
@@ -132,10 +129,9 @@ public class StartMenu implements ActionListener {
 	public void simulate() {
 		this.backGroundMusic1.close();
 		this.backGroundMusic2.close();
-		// 배경화면 및 컴포넌트 전부 교체
 
 		setMainCompVisible(false);
-		Simulator.getInstance().setInfo(DataBase.getInstance().getSimulator(loginedUser));
+		Simulator.getInstance(true).setInfo(DataBase.getInstance().getSimulator(loginedUser));
 		Simulator.getInstance().start();
 	}
 

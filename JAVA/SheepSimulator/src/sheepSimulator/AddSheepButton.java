@@ -9,11 +9,11 @@ import javax.swing.ImageIcon;
 public class AddSheepButton extends Button {
 	public AddSheepButton() {
 
-		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/quit.png"));
-		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/quit_entered.png"));
+		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/makeSheep.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/makeSheep_entered.png"));
 
 		this.setIcon(this.buttonImage);
-		this.setBounds(375, 470, 535, 120);
+		this.setBounds(1630, 755, 271, 105);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
