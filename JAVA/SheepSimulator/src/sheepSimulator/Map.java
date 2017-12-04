@@ -9,9 +9,9 @@ public class Map {
 
 	private Map() {
 		tileInfo = new boolean[MainClass.S_WIDTH / tileSize][MainClass.S_WIDTH / tileSize];
-		
-		for(int i = 0; i < MainClass.S_WIDTH / tileSize;i++)
-			for(int j = 0;j<MainClass.S_WIDTH / tileSize;j++)
+
+		for (int i = 1; i < MainClass.S_WIDTH / tileSize - 1; i++)
+			for (int j = 1; j < MainClass.S_WIDTH / tileSize - 1; j++)
 				tileInfo[i][j] = true;
 	}
 

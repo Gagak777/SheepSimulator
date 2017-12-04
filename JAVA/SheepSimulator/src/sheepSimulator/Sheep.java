@@ -3,6 +3,7 @@ package sheepSimulator;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.swing.ImageIcon;
@@ -11,8 +12,10 @@ public class Sheep extends Thread {
 
 	private int loc_x; // 저장
 	private int loc_y; // 저장
-	private int vector; // 저장
+	private int vector; // 저장, Radian각도
 	private Queue<Point> route;
+
+	private int frame = 1;
 
 	private Image appearance; // 양 외모, 저장
 	private String app_url; // 양 이미지 url
@@ -23,6 +26,7 @@ public class Sheep extends Thread {
 	private boolean sex; // 0: 수컷, 1: 암컷, 저장
 
 	private int t_count; // 양 행동지속 남은 시간, 저장
+	private int checkSecond;
 	private long before_clock;
 	private long now_clock;
 	private boolean isExcute; // 저장
@@ -32,7 +36,7 @@ public class Sheep extends Thread {
 
 	public Sheep() {
 		this(SheepSex.valueOf("RANDOM").ordinal());
-		this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
+		this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();//////////// test
 	}
 
 	public Sheep(int sex) {
@@ -51,15 +55,15 @@ public class Sheep extends Thread {
 		}
 		this.satiety = 100;
 		this.birth = MainClass.simulateYear;
-		this.stamina = 30;
+		this.stamina = 5; /////////////////// test-NE
 		this.lifeLimit = 10 + (int) (Math.random() * 6 - 3);
 		this.isExcute = false;
 
 		this.vector = 0;
 		this.t_count = 0;
 		this.sheepState = -1;
-		this.loc_x = 1000;////////////////test
-		this.loc_y = 500;/////////////////test
+		this.loc_x = 1000;//////////////// test
+		this.loc_y = 500;///////////////// test
 	}
 
 	public Sheep(String appearance, int loc_x, int loc_y, int birth, boolean sex, int lifeLimit, int satiety,
@@ -80,6 +84,7 @@ public class Sheep extends Thread {
 
 	@Override
 	public void run() {
+		this.route = new LinkedList<Point>();
 		while (!this.isDeath()) {
 			if (MainClass.pause) { // 게임 일시정지일 경우
 				continue;
@@ -152,12 +157,23 @@ public class Sheep extends Thread {
 
 		if (this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
-			this.satiety--;
-			this.t_count--;
-			this.stamina--;
-			// 모션 바꾸기			
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
-			
+
+			this.checkSecond++;
+			if (this.checkSecond >= MainClass.BASE_SPEED * MainClass.simulationSpeed) {
+				this.stamina--;
+				this.t_count--;
+				this.checkSecond = 0;
+				this.satiety -= 1;
+			}
+			// 모션 바꾸기
+			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
+					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png"))
+						.getImage();/**/
+			else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png"))
+						.getImage();
+
 			this.before_clock = this.now_clock;
 		}
 
@@ -168,35 +184,46 @@ public class Sheep extends Thread {
 	private void walk() {
 		if (this.isExcute == false) {
 			this.isExcute = true;
-			this.t_count = (int) (Math.random() * 2 + 10);
-			this.vector = (int) (Math.random() * 360);
+			this.t_count = (int) (Math.random() * 5 + 1);
+			this.vector = (int) Math.toRadians(Math.random() * 360); /* 라디안각으로 변경 */
 			this.before_clock = System.nanoTime();
+			this.checkSecond = 0;
 		}
 
 		this.now_clock = System.nanoTime();
 
 		if (this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
-			this.satiety -= 2;
-			this.stamina--;
 
-			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector) * MainClass.BASE_SPEED,
+			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector) * MainClass.BASE_SPEED, /**/
 					this.loc_y + (int) Math.sin(this.vector) * MainClass.BASE_SPEED)) {
-				this.vector = (int) (Math.random() * 360);
+				this.vector = (int) Math.toRadians(Math.random() * 360); /* 라디안각으로 변경 */
 			}
 
-			this.loc_x += (int) (Math.cos(this.vector) * MainClass.SHEEP_SPEED);
+			this.loc_x += (int) (Math.cos(this.vector) * MainClass.SHEEP_SPEED); /**/
 			this.loc_y += (int) (Math.sin(this.vector) * MainClass.SHEEP_SPEED);
 
-			this.t_count--;
-			
+			this.checkSecond++;
+			if (this.checkSecond >= MainClass.BASE_SPEED * MainClass.simulationSpeed) {
+				this.stamina--;
+				this.t_count--;
+				this.checkSecond = 0;
+				this.satiety -= 2;
+			}
+
 			// 모션 바꾸기
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test			
-			
+			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
+					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png"))
+						.getImage();/**/
+			else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png"))
+						.getImage();
+
 			this.before_clock = this.now_clock;
 
-			this.loc_x += (int) Math.cos(this.vector);
-			this.loc_y += (int) Math.sin(this.vector);
+			this.loc_x += (int) Math.cos(this.vector); /**/
+			this.loc_y += (int) Math.sin(this.vector); /**/
 		}
 		if (this.t_count == 0)
 			this.isExcute = false;
@@ -207,15 +234,28 @@ public class Sheep extends Thread {
 			this.isExcute = true;
 			this.before_clock = System.nanoTime();
 			this.searchRoute();
+			this.checkSecond = 0;
 		}
 
 		this.now_clock = System.nanoTime();
 		if (Simulator.getInstance().isGrass(this.loc_x, this.loc_y) && this.now_clock
 				- this.before_clock > MainClass.SECOND / (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
-			
+			this.checkSecond++;
+			if (this.checkSecond >= MainClass.BASE_SPEED * MainClass.simulationSpeed) {
+				this.satiety += 10;
+				this.stamina--;
+				// 풀 용량 줄이기
+				this.checkSecond = 0;
+			}
 			// 양 먹는 모션
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
-			
+			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
+					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_right.png"))
+						.getImage();/**/
+			else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_left.png"))
+						.getImage();
+
 		} else if (this.route.size() != 0 && this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed))
 			this.moveTo();
@@ -225,17 +265,33 @@ public class Sheep extends Thread {
 		if (this.isExcute == false) {
 			this.isExcute = true;
 			this.before_clock = System.nanoTime();
+			this.checkSecond = 0;
+			this.frame = 1;
 		}
 
 		this.now_clock = System.nanoTime();
 
 		if (this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
-			this.stamina += 6 / MainClass.BASE_SPEED;
+
+			this.checkSecond++;
+			if (this.checkSecond >= MainClass.BASE_SPEED * MainClass.simulationSpeed) {
+				this.stamina += 6;
+				this.checkSecond = 0;
+				this.satiety--;
+			}
+
 			// 모션 바꾸기
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
-			
+			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
+					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep" + this.frame + "_right.png"))
+						.getImage();/**/
+			else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep" + this.frame + "_left.png"))
+						.getImage();
+
 			this.before_clock = this.now_clock;
+			this.frame = ++frame % 2 + 1;
 
 		}
 
@@ -249,11 +305,31 @@ public class Sheep extends Thread {
 			this.before_clock = System.nanoTime();
 		}
 		// 사랑하는 모션
-
+		if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
+				|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_love_right.png"))
+					.getImage();/**/
+		else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270)
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_love_left.png")).getImage();
 	}
 
 	private void death() { // 약간 다르게
 		// 3프레임 죽는모션
+		if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
+				|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_right.png"))
+					.getImage();/**/
+		else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270)
+			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_left.png")).getImage();
+
+		try {
+			this.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		this.appearance = new ImageIcon("").getImage();
 	}
 
 	private boolean isDeath() {
@@ -264,9 +340,6 @@ public class Sheep extends Thread {
 	}
 
 	private void moveTo() {
-		this.satiety -= 2;
-		this.stamina--;
-		
 		if (route.poll().getX() == this.get_x() && route.poll().getY() == this.get_y()) {
 			route.remove();
 		} else {
@@ -275,18 +348,31 @@ public class Sheep extends Thread {
 			this.loc_x += (int) Math.cos(this.vector);
 			this.loc_y += (int) Math.sin(this.vector);
 
+			this.checkSecond++;
+			if (this.checkSecond >= MainClass.BASE_SPEED * MainClass.simulationSpeed) {
+				this.satiety -= 2;
+				this.stamina--;
+				this.checkSecond = 0;
+			}
+
 			// 모션 바꾸기
-			this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep.png")).getImage();////////////test
-			
+			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
+					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360))
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png"))
+						.getImage();/**/
+			else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270)
+				this.appearance = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png"))
+						.getImage();
+
 			this.before_clock = this.now_clock;
 		}
 	}
 
 	private void searchRoute() {
 		GrassTile nearGrass = Simulator.getInstance().nearGrass(this.loc_x, this.loc_y);
-		Point grassLoc = new Point(nearGrass.get_x(), nearGrass.get_y());
-
+		Point grassLoc = new Point();
 		if (nearGrass != null) {
+			grassLoc = new Point(nearGrass.get_x(), nearGrass.get_y());
 			this.recursiveSearch(new Point(this.loc_x, this.loc_y), grassLoc);
 		}
 	}
