@@ -20,8 +20,7 @@ public class DataBase {
 	private static DataBase Instance = null;
 	private ArrayList<User> userList;
 	private ArrayList<SimulationData> simulList;
-
-	// 이하 설정값 등등 추가
+	
 	private DataBase() {
 		userList = new ArrayList<User>();
 		simulList = new ArrayList<SimulationData>();
@@ -44,13 +43,13 @@ public class DataBase {
 
 	public SimulationData getSimulator(User loginedUser) {
 		SimulationData nowSimul = null;
-/*
-		for (SimulationData simul : this.simulList) {
+
+		for (SimulationData simul : this.simulList) { // 체크하자
 			if (simul.getSimulID().equals(loginedUser.getID())) {
 				nowSimul = simul;
 				break;
 			}
-		}*/
+		}
 		if (nowSimul == null) {
 			nowSimul = new SimulationData(loginedUser.getID());
 		}

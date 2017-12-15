@@ -132,7 +132,8 @@ public class StartMenu implements ActionListener {
 
 		setMainCompVisible(false);
 		Simulator.getInstance(true).setInfo(DataBase.getInstance().getSimulator(loginedUser));
-		Simulator.getInstance().start();
+		Thread t = new Thread(Simulator.getInstance());
+		t.start();
 	}
 
 	public void setting() {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-public class Simulator extends Thread {
+public class Simulator implements Runnable {
 
 	private static Simulator Instance = null;
 
@@ -64,18 +64,16 @@ public class Simulator extends Thread {
 		MainClass.simulateYear = this.year;
 		this.flag = true;
 		ScreenGraphic.getInstance()
-				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map02.png")).getImage());
-		
-		//메뉴 컴포넌트 추가
-		
-		
+				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map02.png")).getImage());		
 		
 		for (Sheep shp : this.sheep) {
-			shp.start();
+			Thread t = new Thread(shp);
+			t.start();
 		}
 
 		for (GrassTile gTile : this.GTile) {
-			gTile.start();
+			Thread t = new Thread(gTile);
+			t.start();
 		}
 
 		this.before_time = System.nanoTime();
@@ -83,7 +81,7 @@ public class Simulator extends Thread {
 			this.now_time = System.nanoTime();
 
 			try {
-				this.sleep(100);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -99,7 +97,8 @@ public class Simulator extends Thread {
 	public void addSheep() {
 		Sheep newSheep = SheepFactory.getInstance().makeSheep();
 		this.sheep.add(newSheep);
-		newSheep.start();
+		Thread t = new Thread(newSheep);
+		t.start();
 	}
 
 	public void close() {

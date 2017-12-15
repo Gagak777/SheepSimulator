@@ -8,7 +8,8 @@ import java.util.Queue;
 
 import javax.swing.ImageIcon;
 
-public class Sheep extends Thread {
+public class Sheep implements Runnable {
+	static boolean isRun = true;
 
 	private int loc_x; // 저장
 	private int loc_y; // 저장
@@ -87,8 +88,10 @@ public class Sheep extends Thread {
 
 	@Override
 	public void run() {
+		isRun = true;
+		
 		this.route = new LinkedList<Point>();
-		while (!this.isDeath()) {
+		while (!this.isDeath() && isRun) {
 			if (MainClass.pause) { // 게임 일시정지일 경우
 				continue;
 			}
@@ -125,17 +128,16 @@ public class Sheep extends Thread {
 				break;
 			}
 			try {
-				this.sleep(300);
+				Thread.sleep(300);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		this.death();
 	}
 
-	public void close() {
-		this.interrupt();
+	static public void close() {
+		isRun = false;
 	}
 
 	private void cry() {
@@ -350,7 +352,7 @@ public class Sheep extends Thread {
 			this.app_url = "sheep_dead_left";
 		}
 		try {
-			this.sleep(1000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
