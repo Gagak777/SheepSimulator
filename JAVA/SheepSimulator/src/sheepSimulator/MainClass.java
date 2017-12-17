@@ -5,6 +5,9 @@ public class MainClass {
 	public static final int S_WIDTH = 1920;
 	public static final int S_HEIGHT = 1080;
 
+	public static final int G_WIDTH = 1600;
+	public static final int G_HEIGHT = 1040;
+	
 	public static final long SECOND = 1000000000;
 
 	public static float simulationSpeed = 1;
