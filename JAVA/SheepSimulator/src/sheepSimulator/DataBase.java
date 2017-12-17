@@ -130,7 +130,7 @@ public class DataBase {
 					// 양 개수 추가
 					NodeList sheepInfo = null;
 					for (int j = 0; j < Integer.parseInt(((Element) sheepList).getAttribute("SheepNum")); j++) {
-						sheepInfo = sheepList.item(i).getChildNodes();
+						sheepInfo = sheepList.item(j).getChildNodes();
 
 						sheep.add(new Sheep(((Element) sheepInfo.item(0)).getTextContent(),
 								Integer.parseInt(((Element) sheepInfo.item(1)).getTextContent()),
@@ -149,7 +149,7 @@ public class DataBase {
 					NodeList grassList = userInfo.item(3).getChildNodes();
 					NodeList grassInfo = null;
 					for (int j = 0; j < Integer.parseInt(((Element) grassList).getAttribute("GrassNum")); j++) {
-						grassInfo = grassList.item(i).getChildNodes();
+						grassInfo = grassList.item(j).getChildNodes();
 						GTile.add(new GrassTile(Integer.parseInt(((Element) grassInfo.item(0)).getTextContent()),
 								Integer.parseInt(((Element) grassInfo.item(1)).getTextContent()),
 								Integer.parseInt(((Element) grassInfo.item(2)).getTextContent())));
