@@ -5,7 +5,8 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class GrassTile extends Thread {
+public class GrassTile implements Runnable {
+	private static boolean isRun = true;
 
 	private Image grassImage;
 	private int grassCap;
@@ -37,14 +38,16 @@ public class GrassTile extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
+		isRun = true;
+		
+		while (isRun) {
 			//이미지 세팅
 			if (MainClass.pause)
 				continue;
 
 			if (this.grassCap < 10) {
 				try {
-					this.sleep(10000);
+					Thread.sleep(10000);
 					this.grassCap++;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -54,8 +57,8 @@ public class GrassTile extends Thread {
 		}
 	}
 
-	public void close() {
-		this.interrupt();
+	public static void close() {
+		isRun = false;
 	}
 
 	public void drawImage(Graphics2D g) {

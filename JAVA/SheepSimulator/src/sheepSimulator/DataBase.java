@@ -21,7 +21,6 @@ public class DataBase {
 	private ArrayList<User> userList;
 	private ArrayList<SimulationData> simulList;
 
-	// 이하 설정값 등등 추가
 	private DataBase() {
 		userList = new ArrayList<User>();
 		simulList = new ArrayList<SimulationData>();
@@ -44,13 +43,13 @@ public class DataBase {
 
 	public SimulationData getSimulator(User loginedUser) {
 		SimulationData nowSimul = null;
-/*
-		for (SimulationData simul : this.simulList) {
+
+		for (SimulationData simul : this.simulList) { // 체크하자
 			if (simul.getSimulID().equals(loginedUser.getID())) {
 				nowSimul = simul;
 				break;
 			}
-		}*/
+		}
 		if (nowSimul == null) {
 			nowSimul = new SimulationData(loginedUser.getID());
 		}
@@ -61,7 +60,7 @@ public class DataBase {
 	public void saveSimul(SimulationData simul) {
 		boolean isSave = false;
 		for (int i = 0; i < this.simulList.size(); i++) {
-			if (simulList.get(i).getSimulID() == simul.getSimulID()) {
+			if (simulList.get(i).getSimulID().equals(simul.getSimulID())) {
 				simulList.remove(i);
 				simulList.add(i, simul);
 				isSave = true;
@@ -121,41 +120,44 @@ public class DataBase {
 				NodeList node = root.getElementsByTagName("SIMUL" + i);
 				Node userNode = node.item(0);
 
-				NodeList userInfo = userNode.getChildNodes();
-				simulID = ((Element) userInfo.item(0)).getTextContent();
-				year = Integer.parseInt(((Element) userInfo.item(1)).getTextContent());
+				if (userNode != null) {
+					NodeList userInfo = userNode.getChildNodes();
+					simulID = ((Element) userInfo.item(0)).getTextContent();
+					year = Integer.parseInt(((Element) userInfo.item(1)).getTextContent());
 
-				NodeList sheepList = userInfo.item(2).getChildNodes();
+					NodeList sheepList = userInfo.item(2).getChildNodes();
 
-				// 양 개수 추가
-				NodeList sheepInfo = null;
-				for (int j = 0; j < Integer.parseInt(((Element) sheepList).getAttribute("SheepNum")); j++) {
-					sheepInfo = sheepList.item(i).getChildNodes();
+					// 양 개수 추가
+					NodeList sheepInfo = null;
+					for (int j = 0; j < Integer.parseInt(((Element) sheepList).getAttribute("SheepNum")); j++) {
+						sheepInfo = sheepList.item(i).getChildNodes();
 
-					sheep.add(new Sheep(((Element) sheepInfo.item(0)).getTextContent(),
-							Integer.parseInt(((Element) sheepInfo.item(1)).getTextContent()),
-							Integer.parseInt(((Element) sheepInfo.item(2)).getTextContent()),
-							Integer.parseInt(((Element) sheepInfo.item(3)).getTextContent()),
-							Boolean.parseBoolean((((Element) sheepInfo.item(4)).getTextContent())),
-							Integer.parseInt(((Element) sheepInfo.item(5)).getTextContent()),
-							Integer.parseInt(((Element) sheepInfo.item(6)).getTextContent()),
-							Integer.parseInt(((Element) sheepInfo.item(7)).getTextContent()),
-							Integer.parseInt(((Element) sheepInfo.item(8)).getTextContent()),
-							Boolean.parseBoolean((((Element) sheepInfo.item(9)).getTextContent())),
-							Integer.parseInt(((Element) sheepInfo.item(10)).getTextContent()),
-							Integer.parseInt(((Element) sheepInfo.item(11)).getTextContent())));
+						sheep.add(new Sheep(((Element) sheepInfo.item(0)).getTextContent(),
+								Integer.parseInt(((Element) sheepInfo.item(1)).getTextContent()),
+								Integer.parseInt(((Element) sheepInfo.item(2)).getTextContent()),
+								Integer.parseInt(((Element) sheepInfo.item(3)).getTextContent()),
+								Boolean.parseBoolean((((Element) sheepInfo.item(4)).getTextContent())),
+								Integer.parseInt(((Element) sheepInfo.item(5)).getTextContent()),
+								Integer.parseInt(((Element) sheepInfo.item(6)).getTextContent()),
+								Integer.parseInt(((Element) sheepInfo.item(7)).getTextContent()),
+								Integer.parseInt(((Element) sheepInfo.item(8)).getTextContent()),
+								Boolean.parseBoolean((((Element) sheepInfo.item(9)).getTextContent())),
+								Integer.parseInt(((Element) sheepInfo.item(10)).getTextContent()),
+								Integer.parseInt(((Element) sheepInfo.item(11)).getTextContent())));
 
-				}
-				NodeList grassList = userInfo.item(3).getChildNodes();
-				NodeList grassInfo = null;
-				for (int j = 0; j < Integer.parseInt(((Element) grassList).getAttribute("GrassNum")); j++) {
-					grassInfo = grassList.item(i).getChildNodes();
-					GTile.add(new GrassTile(Integer.parseInt(((Element) grassInfo.item(0)).getTextContent()),
-							Integer.parseInt(((Element) grassInfo.item(1)).getTextContent()),
-							Integer.parseInt(((Element) grassInfo.item(2)).getTextContent())));
+					}
+					NodeList grassList = userInfo.item(3).getChildNodes();
+					NodeList grassInfo = null;
+					for (int j = 0; j < Integer.parseInt(((Element) grassList).getAttribute("GrassNum")); j++) {
+						grassInfo = grassList.item(i).getChildNodes();
+						GTile.add(new GrassTile(Integer.parseInt(((Element) grassInfo.item(0)).getTextContent()),
+								Integer.parseInt(((Element) grassInfo.item(1)).getTextContent()),
+								Integer.parseInt(((Element) grassInfo.item(2)).getTextContent())));
+
+					}
 
 					this.simulList.add(new SimulationData(simulID, year, sheep, GTile));
-				}
+				}				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -230,58 +232,60 @@ public class DataBase {
 				xmlW.writeStartElement("SHEEPS");
 				xmlW.writeAttribute("SheepNum", String.valueOf(simulData.getSheep().size()));
 				for (Sheep sheep : simulData.getSheep()) {
-					xmlW.writeStartElement("SHEEP" + num);
+					if (!sheep.isDeath()) {
+						xmlW.writeStartElement("SHEEP" + num);
 
-					xmlW.writeStartElement("appearance");
-					xmlW.writeCharacters(sheep.get_appURL());
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("appearance");
+						xmlW.writeCharacters(sheep.get_appURL());
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("loc_x");
-					xmlW.writeCharacters(String.valueOf(sheep.get_x()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("loc_x");
+						xmlW.writeCharacters(String.valueOf(sheep.get_x()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("loc_y");
-					xmlW.writeCharacters(String.valueOf(sheep.get_y()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("loc_y");
+						xmlW.writeCharacters(String.valueOf(sheep.get_y()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("birth");
-					xmlW.writeCharacters(String.valueOf(sheep.get_birth()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("birth");
+						xmlW.writeCharacters(String.valueOf(sheep.get_birth()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("sex");
-					xmlW.writeCharacters(String.valueOf(sheep.get_sex()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("sex");
+						xmlW.writeCharacters(String.valueOf(sheep.get_sex()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("lifeLimit");
-					xmlW.writeCharacters(String.valueOf(sheep.get_lifeLimit()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("lifeLimit");
+						xmlW.writeCharacters(String.valueOf(sheep.get_lifeLimit()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("satiety");
-					xmlW.writeCharacters(String.valueOf(sheep.get_satiety()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("satiety");
+						xmlW.writeCharacters(String.valueOf(sheep.get_satiety()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("stamina");
-					xmlW.writeCharacters(String.valueOf(sheep.get_stamina()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("stamina");
+						xmlW.writeCharacters(String.valueOf(sheep.get_stamina()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("state");
-					xmlW.writeCharacters(String.valueOf(sheep.get_sheepState()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("state");
+						xmlW.writeCharacters(String.valueOf(sheep.get_sheepState()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("isExcute");
-					xmlW.writeCharacters(String.valueOf(sheep.get_isExcute()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("isExcute");
+						xmlW.writeCharacters(String.valueOf(sheep.get_isExcute()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("count");
-					xmlW.writeCharacters(String.valueOf(sheep.get_count()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("count");
+						xmlW.writeCharacters(String.valueOf(sheep.get_count()));
+						xmlW.writeEndElement();
 
-					xmlW.writeStartElement("vector");
-					xmlW.writeCharacters(String.valueOf(sheep.get_vector()));
-					xmlW.writeEndElement();
+						xmlW.writeStartElement("vector");
+						xmlW.writeCharacters(String.valueOf(sheep.get_vector()));
+						xmlW.writeEndElement();
 
-					xmlW.writeEndElement();
-					num++;
+						xmlW.writeEndElement();
+						num++;
+					}
 				}
 				xmlW.writeEndElement();
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-public class Simulator extends Thread {
+public class Simulator implements Runnable {
 
 	private static Simulator Instance = null;
 
@@ -44,54 +44,54 @@ public class Simulator extends Thread {
 		return Instance;
 	}
 
-	public static Simulator getInstance(boolean flag) {
-		if (flag || Instance == null)
-			Instance = new Simulator();
-		return Instance;
-	}
-
 	public void setInfo(SimulationData simulData) {
 		this.simulID = simulData.getSimulID();
-		this.year = simulData.getYear();
-		
-		for(int i = 0; i < simulData.getSheep().size();i++)
-			this.sheep.add((Sheep)simulData.getSheep().get(i).clone());
+		this.year = simulData.getYear();		
+		this.sheep = simulData.getSheep();		
 		this.GTile = simulData.getGTile();
 	}
-
-	public void run() {
+	
+	public void init() {
+		this.slowButton.setVisible(true);
+		this.fastButton.setVisible(true);
+		this.simulationExitButton.setVisible(true);
+		this.addButton.setVisible(true);
+		
 		ScreenGraphic.getInstance().isSimulRun = true;
 		MainClass.simulateYear = this.year;
 		this.flag = true;
 		ScreenGraphic.getInstance()
-				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map02.png")).getImage());
-		
-		//메뉴 컴포넌트 추가
-		
-		
+				.setBackGround(new ImageIcon(MainClass.class.getResource("../res/image/map02.png")).getImage());	
 		
 		for (Sheep shp : this.sheep) {
-			shp.start();
+			Thread t = new Thread(shp);
+			t.start();
 		}
 
 		for (GrassTile gTile : this.GTile) {
-			gTile.start();
+			Thread t = new Thread(gTile);
+			t.start();
 		}
+	}
 
+	public void run() {	
+		if(ScreenGraphic.getInstance().isSimulRun == false)
+			this.init();
 		this.before_time = System.nanoTime();
 		while (this.flag) {
 			this.now_time = System.nanoTime();
-
-			try {
-				this.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			if (this.now_time - this.before_time > MainClass.SECOND * 10 / MainClass.simulationSpeed) {
 				MainClass.simulateYear++;
 				this.before_time = this.now_time;
+			}
+			else {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Thread.yield();
 			}
 		}
 	}
@@ -99,15 +99,18 @@ public class Simulator extends Thread {
 	public void addSheep() {
 		Sheep newSheep = SheepFactory.getInstance().makeSheep();
 		this.sheep.add(newSheep);
-		newSheep.start();
+		Thread t = new Thread(newSheep);
+		t.start();
 	}
 
 	public void close() {
-
+		
 		this.simulationExitButton.setVisible(false);
 		this.slowButton.setVisible(false);
 		this.fastButton.setVisible(false);
 		this.addButton.setVisible(false);
+		Sheep.close();
+		GrassTile.close();
 		
 		DataBase.getInstance()
 				.saveSimul(new SimulationData(this.simulID, MainClass.simulateYear, this.sheep, this.GTile));
