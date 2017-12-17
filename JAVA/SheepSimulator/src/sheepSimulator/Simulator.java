@@ -78,6 +78,7 @@ public class Simulator implements Runnable {
 		if(ScreenGraphic.getInstance().isSimulRun == false)
 			this.init();
 		this.before_time = System.nanoTime();
+		
 		while (this.flag) {
 			this.now_time = System.nanoTime();
 			if (this.now_time - this.before_time > MainClass.SECOND * 10 / MainClass.simulationSpeed) {

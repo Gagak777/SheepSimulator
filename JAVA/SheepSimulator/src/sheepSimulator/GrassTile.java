@@ -40,20 +40,17 @@ public class GrassTile implements Runnable {
 	public void run() {
 		isRun = true;
 		
-		while (isRun) {
+		while (this.grassCap < 10 && isRun) {
 			//이미지 세팅
 			if (MainClass.pause)
 				continue;
 
-			if (this.grassCap < 10) {
 				try {
 					Thread.sleep(10000);
 					this.grassCap++;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
-			}
 		}
 	}
 

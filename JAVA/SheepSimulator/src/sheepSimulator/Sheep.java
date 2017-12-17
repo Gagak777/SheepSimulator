@@ -24,8 +24,12 @@ public class Sheep implements Runnable {
 	private Image dead_right;
 	private Image stand_left;
 	private Image stand_right;
+	private Image stand_left2;
+	private Image stand_right2;
 	private Image eat_left;
 	private Image eat_right;
+	private Image eat_left2;
+	private Image eat_right2;
 	private Image sleep_left1;
 	private Image sleep_right1;
 	private Image sleep_left2;
@@ -58,8 +62,14 @@ public class Sheep implements Runnable {
 		this.dead_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_right.png")).getImage();
 		this.stand_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();
 		this.stand_left = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png")).getImage();
+		this.stand_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_right.png")).getImage();
+		this.stand_left2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_left.png")).getImage();
+
 		this.eat_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_right.png")).getImage();
 		this.eat_left = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_left.png")).getImage();
+		this.eat_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat2_right.png")).getImage();
+		this.eat_left2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat2_left.png")).getImage();
+
 		this.sleep_right1 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_right.png"))
 				.getImage();
 		this.sleep_left1 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_left.png")).getImage();
@@ -113,8 +123,14 @@ public class Sheep implements Runnable {
 		this.dead_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_right.png")).getImage();
 		this.stand_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();
 		this.stand_left = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png")).getImage();
+		this.stand_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_right.png")).getImage();
+		this.stand_left2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_left.png")).getImage();
+
 		this.eat_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_right.png")).getImage();
 		this.eat_left = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_left.png")).getImage();
+		this.eat_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat2_right.png")).getImage();
+		this.eat_left2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat2_left.png")).getImage();
+		
 		this.sleep_right1 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_right.png"))
 				.getImage();
 		this.sleep_left1 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_left.png")).getImage();
@@ -246,6 +262,7 @@ public class Sheep implements Runnable {
 			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector) * MainClass.BASE_SPEED, /**/
 					this.loc_y + (int) Math.sin(this.vector) * MainClass.BASE_SPEED)) {
 				this.vector = (int) Math.toRadians(Math.random() * 360); /* 라디안각으로 변경 */
+				System.out.println("*\n");
 			}
 
 			this.loc_x += (int) (Math.cos(this.vector) * MainClass.SHEEP_SPEED); /**/

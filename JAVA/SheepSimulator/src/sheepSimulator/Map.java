@@ -12,9 +12,9 @@ public class Map {
 
 	private Map() {
 		tileInfo = new boolean[MainClass.G_WIDTH / tileSize][MainClass.G_HEIGHT / tileSize]; // 20 * 13
-
-		boolean [][] map01;
-		map01 = new boolean[][]{
+		
+		boolean [][] tempMap;
+		tempMap = new boolean[][]{
 				{f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f},
 				{f, f, f, f, f, f, f, f, t, t, t, t, t, t, t, t, t, f, f, f},
 				{f, f, f, f, f, f, f, f, t, t, t, t, t, t, t, t, t, f, f, f},
@@ -29,8 +29,8 @@ public class Map {
 				{f, f, f, f, f, f, f, f, f, t, f, f, t, t, t, t, f, f, f, f},
 				{f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f}
 		};
-		
-		tileInfo = map01;
+
+		tileInfo = tempMap;
 	}
 
 	public static Map getInstance() {
@@ -40,6 +40,6 @@ public class Map {
 	}
 
 	public boolean isValid(int x, int y) {
-		return tileInfo[(int) (x / tileSize)][(int) (y / tileSize)];
+		return tileInfo[(int) (y / tileSize)][(int) (x / tileSize)];
 	}
 }
