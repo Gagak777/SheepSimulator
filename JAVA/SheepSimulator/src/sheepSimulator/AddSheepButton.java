@@ -13,7 +13,7 @@ public class AddSheepButton extends Button {
 		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/makeSheep_entered.png"));
 
 		this.setIcon(this.buttonImage);
-		this.setBounds(1630, 755, 271, 105);
+		this.setBounds(1630, 677, 271, 105);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);

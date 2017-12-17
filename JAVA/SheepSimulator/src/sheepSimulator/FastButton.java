@@ -12,7 +12,7 @@ public class FastButton extends Button {
 		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/arrow_right_entered.png"));
 		
 		this.setIcon(this.buttonImage);
-		this.setBounds(1805, 558, 86, 89);
+		this.setBounds(1834, 573, 57, 59);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
@@ -37,6 +37,7 @@ public class FastButton extends Button {
 				buttonPressed.start();
 				if(MainClass.simulationSpeed < 3)
 					MainClass.simulationSpeed += 0.5;
+				Simulator.getInstance().updateSpeed();
 			}
 		});
 	}

@@ -69,15 +69,15 @@ public class StartMenu implements ActionListener {
 		setLoginLabel();
 		setLoginTextField();
 
-		ScreenGraphic.getInstance().add(loginButton);
-		ScreenGraphic.getInstance().add(logoutButton);
-		ScreenGraphic.getInstance().add(simulateButton);
-		ScreenGraphic.getInstance().add(settingButton);
-		ScreenGraphic.getInstance().add(exitButton);
-		ScreenGraphic.getInstance().add(idTextFieldLabel);
-		ScreenGraphic.getInstance().add(pwTextFieldLabel);
-		ScreenGraphic.getInstance().add(idImageLabel);
-		ScreenGraphic.getInstance().add(pwImageLabel);
+		ScreenGraphic.getInstance().add(this.loginButton);
+		ScreenGraphic.getInstance().add(this.logoutButton);
+		ScreenGraphic.getInstance().add(this.simulateButton);
+		ScreenGraphic.getInstance().add(this.settingButton);
+		ScreenGraphic.getInstance().add(this.exitButton);
+		ScreenGraphic.getInstance().add(this.idTextFieldLabel);
+		ScreenGraphic.getInstance().add(this.pwTextFieldLabel);
+		ScreenGraphic.getInstance().add(this.idImageLabel);
+		ScreenGraphic.getInstance().add(this.pwImageLabel);
 
 		this.backGroundMusic1.start();
 		this.backGroundMusic2.start();
@@ -106,22 +106,22 @@ public class StartMenu implements ActionListener {
 	}
 
 	public void login() {
-		inputId = idTextField.getText();
-		inputPw = String.valueOf(pwTextField.getPassword());
+		this.inputId = idTextField.getText();
+		this.inputPw = String.valueOf(this.pwTextField.getPassword());
 		
-		loginedUser = DataBase.getInstance().identUser(inputId, inputPw);
-		if (loginedUser != null) {
+		this.loginedUser = DataBase.getInstance().identUser(this.inputId, this.inputPw);
+		if (this.loginedUser != null) {
 			setLoginCompVisible(false);
 			setMainCompVisible(true);
 		}
-		inputId = "";
-		inputPw = "";
-		idTextField.setText("");
-		pwTextField.setText("");
+		this.inputId = "";
+		this.inputPw = "";
+		this.idTextField.setText("");
+		this.pwTextField.setText("");
 	}
 
 	public void logout() {
-		loginedUser = null;
+		this.loginedUser = null;
 		setMainCompVisible(false);
 		setLoginCompVisible(true);
 	}
@@ -131,7 +131,7 @@ public class StartMenu implements ActionListener {
 		this.backGroundMusic2.close();
 
 		setMainCompVisible(false);
-		Simulator.getInstance().setInfo(DataBase.getInstance().getSimulator(loginedUser));
+		Simulator.getInstance().setInfo(DataBase.getInstance().getSimulator(this.loginedUser));
 		Thread t = new Thread(Simulator.getInstance());
 		t.start();
 	}
@@ -195,18 +195,18 @@ public class StartMenu implements ActionListener {
 	}
 
 	private void setMainCompVisible(boolean flag) {
-		simulateButton.setVisible(flag);
-		settingButton.setVisible(flag);
-		logoutButton.setVisible(flag);
+		this.simulateButton.setVisible(flag);
+		this.settingButton.setVisible(flag);
+		this.logoutButton.setVisible(flag);
 	}
 
 	private void setLoginCompVisible(boolean flag) {
-		loginButton.setVisible(flag);
-		exitButton.setVisible(flag);
-		idTextFieldLabel.setVisible(flag);
-		pwTextFieldLabel.setVisible(flag);
-		idImageLabel.setVisible(flag);
-		pwImageLabel.setVisible(flag);
+		this.loginButton.setVisible(flag);
+		this.exitButton.setVisible(flag);
+		this.idTextFieldLabel.setVisible(flag);
+		this.pwTextFieldLabel.setVisible(flag);
+		this.idImageLabel.setVisible(flag);
+		this.pwImageLabel.setVisible(flag);
 	}
 
 	@Override
@@ -214,11 +214,11 @@ public class StartMenu implements ActionListener {
 		// TODO Auto-generated method stub
 		Object obj = event.getSource();
 
-		if (obj == idTextField) {
-			pwTextField.requestFocus();
+		if (obj == this.idTextField) {
+			this.pwTextField.requestFocus();
 		}
-		if (obj == pwTextField) {
-			loginButton.requestFocus();
+		if (obj == this.pwTextField) {
+			this.loginButton.requestFocus();
 		}
 	}
 }

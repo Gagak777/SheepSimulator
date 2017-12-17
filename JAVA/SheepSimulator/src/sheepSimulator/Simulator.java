@@ -1,18 +1,27 @@
 package sheepSimulator;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class Simulator implements Runnable {
 
 	private static Simulator Instance = null;
 
+	private JLabel yearLabel;
+	private Font yearFont;
+	private JLabel speedLabel;
+	private Font speedFont;
+	
 	private SimulationExitButton simulationExitButton;
 	private SlowButton slowButton;
 	private FastButton fastButton;
 	private AddSheepButton addButton;
+	private PauseButton pauseButton;
 
 	private ArrayList<Sheep> sheep;
 	private ArrayList<GrassTile> GTile;
@@ -26,14 +35,32 @@ public class Simulator implements Runnable {
 	private Simulator() {
 
 		this.simulationExitButton = new SimulationExitButton();
-		ScreenGraphic.getInstance().add(simulationExitButton);
+		ScreenGraphic.getInstance().add(this.simulationExitButton);
 		this.slowButton = new SlowButton();
-		ScreenGraphic.getInstance().add(slowButton);
+		ScreenGraphic.getInstance().add(this.slowButton);
 		this.fastButton = new FastButton();
-		ScreenGraphic.getInstance().add(fastButton);
+		ScreenGraphic.getInstance().add(this.fastButton);
 		this.addButton = new AddSheepButton();
 		ScreenGraphic.getInstance().add(this.addButton);
-
+		this.pauseButton = new PauseButton();
+		ScreenGraphic.getInstance().add(this.pauseButton);
+		
+		this.yearFont = new Font("default", Font.PLAIN, 70);
+		this.yearLabel = new JLabel();
+		this.yearLabel.setForeground(new Color(99,68,40));
+		this.yearLabel.setFont(this.yearFont);
+		this.yearLabel.setBounds(1630, 294, 271, 105);
+		this.yearLabel.setHorizontalAlignment(JLabel.CENTER);
+		ScreenGraphic.getInstance().add(this.yearLabel);
+		
+		this.speedFont = new Font("default", Font.PLAIN, 50);
+		this.speedLabel = new JLabel();
+		this.speedLabel.setForeground(new Color(99,68,40));
+		this.speedLabel.setFont(this.speedFont);
+		this.speedLabel.setBounds(1698, 550, 136, 105);
+		this.speedLabel.setHorizontalAlignment(JLabel.CENTER);
+		ScreenGraphic.getInstance().add(this.speedLabel);
+		
 		this.sheep = new ArrayList<Sheep>();
 		this.GTile = new ArrayList<GrassTile>();
 	}
@@ -56,6 +83,12 @@ public class Simulator implements Runnable {
 		this.fastButton.setVisible(true);
 		this.simulationExitButton.setVisible(true);
 		this.addButton.setVisible(true);
+		this.pauseButton.setVisible(true);
+		this.yearLabel.setVisible(true);
+		this.speedLabel.setVisible(true);
+
+		this.yearLabel.setText(String.valueOf(year));
+		this.speedLabel.setText(String.valueOf(MainClass.simulationSpeed));
 		
 		ScreenGraphic.getInstance().isSimulRun = true;
 		MainClass.simulateYear = this.year;
@@ -77,7 +110,7 @@ public class Simulator implements Runnable {
 	public void run() {	
 		if(ScreenGraphic.getInstance().isSimulRun == false)
 			this.init();
-		
+
 		if(MainClass.pause)
 			Thread.yield();
 		
@@ -86,6 +119,7 @@ public class Simulator implements Runnable {
 			this.now_time = System.nanoTime();
 			if (this.now_time - this.before_time > MainClass.SECOND * 10 / MainClass.simulationSpeed) {
 				MainClass.simulateYear++;
+				this.yearLabel.setText(String.valueOf(MainClass.simulateYear));
 				this.before_time = this.now_time;
 			}
 			else {
@@ -111,6 +145,9 @@ public class Simulator implements Runnable {
 		this.slowButton.setVisible(false);
 		this.fastButton.setVisible(false);
 		this.addButton.setVisible(false);
+		this.pauseButton.setVisible(false);
+		this.yearLabel.setVisible(false);
+		this.speedLabel.setVisible(false);
 		Sheep.close();
 		GrassTile.close();
 		
@@ -163,5 +200,9 @@ public class Simulator implements Runnable {
 				return true;
 		}
 		return false;
+	}
+	
+	public void updateSpeed(){
+		this.speedLabel.setText(String.valueOf(MainClass.simulationSpeed));
 	}
 }
