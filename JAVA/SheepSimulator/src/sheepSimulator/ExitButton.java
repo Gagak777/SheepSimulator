@@ -38,7 +38,7 @@ public class ExitButton extends Button {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
 				DataBase.getInstance().saveUserFile();
-				DataBase.getInstance().saveSimulationFile();;
+				DataBase.getInstance().saveSimulationFile();
 				try {
 					Thread.sleep(700);
 				} catch (Exception ex) {

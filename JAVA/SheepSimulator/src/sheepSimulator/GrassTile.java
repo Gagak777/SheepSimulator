@@ -6,7 +6,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class GrassTile implements Runnable {
-	public static boolean isRun = true;
+	private static boolean isRun = true;
 
 	private Image grassImage;
 	private int grassCap;
@@ -57,7 +57,7 @@ public class GrassTile implements Runnable {
 		}
 	}
 
-	static public void close() {
+	public static void close() {
 		isRun = false;
 	}
 

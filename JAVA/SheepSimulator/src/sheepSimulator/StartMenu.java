@@ -131,7 +131,7 @@ public class StartMenu implements ActionListener {
 		this.backGroundMusic2.close();
 
 		setMainCompVisible(false);
-		Simulator.getInstance(true).setInfo(DataBase.getInstance().getSimulator(loginedUser));
+		Simulator.getInstance().setInfo(DataBase.getInstance().getSimulator(loginedUser));
 		Thread t = new Thread(Simulator.getInstance());
 		t.start();
 	}
