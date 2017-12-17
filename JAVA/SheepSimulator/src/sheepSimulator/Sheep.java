@@ -62,7 +62,8 @@ public class Sheep implements Runnable {
 		this.dead_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_right.png")).getImage();
 		this.stand_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();
 		this.stand_left = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png")).getImage();
-		this.stand_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_right.png")).getImage();
+		this.stand_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_right.png"))
+				.getImage();
 		this.stand_left2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_left.png")).getImage();
 
 		this.eat_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_right.png")).getImage();
@@ -89,7 +90,7 @@ public class Sheep implements Runnable {
 			this.sex = true;
 			break;
 		}
-		this.satiety = 100;
+		this.satiety = 150;
 		this.birth = MainClass.simulateYear;
 		this.stamina = 30;
 		this.lifeLimit = 10 + (int) (Math.random() * 6 - 3);
@@ -123,14 +124,15 @@ public class Sheep implements Runnable {
 		this.dead_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_dead_right.png")).getImage();
 		this.stand_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_right.png")).getImage();
 		this.stand_left = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand_left.png")).getImage();
-		this.stand_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_right.png")).getImage();
+		this.stand_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_right.png"))
+				.getImage();
 		this.stand_left2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_stand2_left.png")).getImage();
 
 		this.eat_right = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_right.png")).getImage();
 		this.eat_left = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat_left.png")).getImage();
 		this.eat_right2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat2_right.png")).getImage();
 		this.eat_left2 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_eat2_left.png")).getImage();
-		
+
 		this.sleep_right1 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_right.png"))
 				.getImage();
 		this.sleep_left1 = new ImageIcon(MainClass.class.getResource("../res/image/sheep_sleep1_left.png")).getImage();
@@ -152,7 +154,7 @@ public class Sheep implements Runnable {
 			if (this.stamina == 0 && sheepState != SheepStatus.valueOf("SLEEP").ordinal()) {
 				this.sheepState = SheepStatus.valueOf("SLEEP").ordinal();
 				this.isExcute = false;
-			} else if (this.satiety < 50 && sheepState != SheepStatus.valueOf("EAT").ordinal()
+			} else if (this.satiety < 80 && sheepState != SheepStatus.valueOf("EAT").ordinal()
 					&& sheepState != SheepStatus.valueOf("SLEEP").ordinal()) {
 				this.sheepState = SheepStatus.valueOf("EAT").ordinal();
 				this.isExcute = false;
@@ -185,8 +187,8 @@ public class Sheep implements Runnable {
 			}
 			Thread.yield();
 		}
-		
-		if(this.isDeath())
+
+		if (this.isDeath())
 			this.death();
 	}
 
@@ -230,13 +232,24 @@ public class Sheep implements Runnable {
 			// 모션 바꾸기
 			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
 					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360)) {
-				this.appearance = this.stand_right;
-				this.app_url = "sheep_stand_right.png";
+				if (this.frame == 1) {
+					this.appearance = this.stand_right;
+					this.app_url = "sheep_stand_right.png";
+				} else {
+					this.appearance = this.stand_right2;
+					this.app_url = "sheep_stand2_right.png";
+				}
 			} else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270) {
-				this.appearance = this.stand_left;
-				this.app_url = "sheep_stand_left.png";
+				if (frame == 1) {
+					this.appearance = this.stand_left;
+					this.app_url = "sheep_stand_left.png";
+				} else {
+					this.appearance = this.stand_left2;
+					this.app_url = "sheep_stand2_left.png";
+				}
 			}
 
+			this.frame = this.frame % 2 + 1;
 			this.before_clock = this.now_clock;
 		}
 
@@ -259,10 +272,9 @@ public class Sheep implements Runnable {
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
 			this.cry();
 
-			while (!Map.getInstance().isValid(this.loc_x + (int) Math.cos(this.vector) * MainClass.BASE_SPEED, /**/
-					this.loc_y + (int) Math.sin(this.vector) * MainClass.BASE_SPEED)) {
+			while (!Map.getInstance().isValid(this.loc_x + (int) (Math.cos(this.vector) * MainClass.SHEEP_SPEED), /**/
+					this.loc_y + (int) (Math.sin(this.vector) * MainClass.SHEEP_SPEED))) {
 				this.vector = (int) Math.toRadians(Math.random() * 360); /* 라디안각으로 변경 */
-				System.out.println("*\n");
 			}
 
 			this.loc_x += (int) (Math.cos(this.vector) * MainClass.SHEEP_SPEED); /**/
@@ -276,15 +288,26 @@ public class Sheep implements Runnable {
 				this.satiety -= 2;
 			}
 
-			// 모션 바꾸기
 			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
 					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360)) {
-				this.appearance = this.stand_right;
-				this.app_url = "sheep_stand_right.png";
+				if (this.frame == 1) {
+					this.appearance = this.stand_right;
+					this.app_url = "sheep_stand_right.png";
+				} else {
+					this.appearance = this.stand_right2;
+					this.app_url = "sheep_stand2_right.png";
+				}
 			} else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270) {
-				this.appearance = this.stand_left;
-				this.app_url = "sheep_stand_left.png";
+				if (frame == 1) {
+					this.appearance = this.stand_left;
+					this.app_url = "sheep_stand_left.png";
+				} else {
+					this.appearance = this.stand_left2;
+					this.app_url = "sheep_stand2_left.png";
+				}
 			}
+
+			this.frame = frame % 2 + 1;
 
 			this.before_clock = this.now_clock;
 
@@ -303,28 +326,47 @@ public class Sheep implements Runnable {
 		}
 
 		this.now_clock = System.nanoTime();
-		if(this.satiety >= 90)
+
+		if (this.satiety >= 150) {
 			this.isExcute = false;
-		else if ((Simulator.getInstance().isGrass(this.loc_x + 60, this.loc_y)
+			return;
+		} else if ((Simulator.getInstance().isGrass(this.loc_x + 60, this.loc_y)
 				|| Simulator.getInstance().isGrass(this.loc_x - 60, this.loc_y))
-				&& this.now_clock - this.before_clock > MainClass.SECOND
-						/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
+				&& this.now_clock
+						- this.before_clock > (MainClass.SECOND / (MainClass.BASE_SPEED * MainClass.simulationSpeed))) {
+			this.before_clock = this.now_clock;
+
 			this.checkSecond++;
 			if (this.checkSecond >= MainClass.BASE_SPEED * MainClass.simulationSpeed) {
-				this.satiety += 10;
+				this.satiety += 15;
 				this.stamina--;
-				// 풀 용량 줄이기
 				this.checkSecond = 0;
+				if ((Simulator.getInstance().isGrass(this.loc_x + 60, this.loc_y)))
+					Simulator.getInstance().consumeGrass(this.loc_x + 60, this.loc_y);
+				else
+					Simulator.getInstance().consumeGrass(this.loc_x - 60, this.loc_y);
 			}
-			// 양 먹는 모션
+
 			if ((Math.toDegrees(this.vector) >= 0 && Math.toDegrees(this.vector) < 90)
 					|| (Math.toDegrees(this.vector) >= 270 && Math.toDegrees(this.vector) < 360)) {
-				this.appearance = this.eat_right;
-				this.app_url = "sheep_eat_right.png";
+				if (this.frame == 1) {
+					this.appearance = this.eat_right;
+					this.app_url = "sheep_eat_right.png";
+				} else {
+					this.appearance = this.eat_right2;
+					this.app_url = "sheep_eat2_right.png";
+				}
 			} else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270) {
-				this.appearance = this.eat_left;
-				this.app_url = "sheep_eat_left.png";
+				if (this.frame == 1) {
+					this.appearance = this.eat_left;
+					this.app_url = "sheep_eat_left.png";
+				} else {
+					this.appearance = this.eat_left2;
+					this.app_url = "sheep_eat2_left.png";
+				}
 			}
+
+			this.frame = this.frame % 2 + 1;
 
 		} else if (this.route.size() != 0 && this.now_clock - this.before_clock > MainClass.SECOND
 				/ (MainClass.BASE_SPEED * MainClass.simulationSpeed)) {
@@ -370,7 +412,7 @@ public class Sheep implements Runnable {
 			}
 
 			this.before_clock = this.now_clock;
-			this.frame = frame % 2 + 1;
+			this.frame = this.frame % 2 + 1;
 		}
 
 		if (this.stamina == 30) {
@@ -403,6 +445,7 @@ public class Sheep implements Runnable {
 			this.app_url = "sheep_dead_right.png";
 		} else if (Math.toDegrees(this.vector) >= 90 && Math.toDegrees(this.vector) < 270) {
 			this.appearance = this.dead_left;
+			this.app_url = "sheep_dead_left.png";
 		}
 		try {
 			Thread.sleep(2000);
@@ -434,12 +477,23 @@ public class Sheep implements Runnable {
 
 			// 모션 바꾸기
 			if (temp.getX() - this.loc_x > 0) {
-				this.appearance = this.stand_right;
-				this.app_url = "sheep_stand_right.png";
+				if (this.frame == 1) {
+					this.appearance = this.stand_right;
+					this.app_url = "sheep_stand_right.png";
+				} else {
+					this.appearance = this.stand_right2;
+					this.app_url = "sheep_stand2_right.png";
+				}
 			} else if (temp.getX() - this.loc_x < 0) {
-				this.appearance = this.stand_left;
-				this.app_url = "sheep_stand_left.png";
+				if (this.frame == 1) {
+					this.appearance = this.stand_left;
+					this.app_url = "sheep_stand_left.png";
+				} else {
+					this.appearance = this.stand_left2;
+					this.app_url = "sheep_stand2_left.png";
+				}
 			}
+			this.frame = this.frame % 2 + 1;
 			this.loc_x = (int) temp.getX();
 			this.loc_y = (int) temp.getY();
 

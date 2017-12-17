@@ -77,8 +77,11 @@ public class Simulator implements Runnable {
 	public void run() {	
 		if(ScreenGraphic.getInstance().isSimulRun == false)
 			this.init();
-		this.before_time = System.nanoTime();
 		
+		if(MainClass.pause)
+			Thread.yield();
+		
+		this.before_time = System.nanoTime();
 		while (this.flag) {
 			this.now_time = System.nanoTime();
 			if (this.now_time - this.before_time > MainClass.SECOND * 10 / MainClass.simulationSpeed) {
@@ -89,7 +92,6 @@ public class Simulator implements Runnable {
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				Thread.yield();
@@ -104,8 +106,7 @@ public class Simulator implements Runnable {
 		t.start();
 	}
 
-	public void close() {
-		
+	public void close() {		
 		this.simulationExitButton.setVisible(false);
 		this.slowButton.setVisible(false);
 		this.fastButton.setVisible(false);
@@ -133,6 +134,15 @@ public class Simulator implements Runnable {
 			}
 		}
 		return curGrass;
+	}
+	
+	public void consumeGrass(int x, int y) {
+		for (GrassTile grass : this.GTile) {
+			if (grass.isGrass(x, y)) {
+				grass.consume();
+				break;
+			}
+		}
 	}
 
 	public String getSimulID() {
