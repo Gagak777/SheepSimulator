@@ -148,7 +148,14 @@ public class Sheep implements Runnable {
 		this.route = new LinkedList<Point>();
 		while (!this.isDeath() && isRun) {
 			if (MainClass.pause) { // 게임 일시정지일 경우
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				Thread.yield();
+				continue;
 			}
 
 			if (this.stamina == 0 && sheepState != SheepStatus.valueOf("SLEEP").ordinal()) {

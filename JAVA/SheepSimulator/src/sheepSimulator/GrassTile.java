@@ -59,8 +59,16 @@ public class GrassTile implements Runnable {
 
 		this.before_time = System.nanoTime();
 		while (isRun) {
-			if (MainClass.pause)
+			if (MainClass.pause) {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				Thread.yield();
+				continue;
+			}
 			
 			if (this.grassCap < 10) {
 				this.now_time = System.nanoTime();

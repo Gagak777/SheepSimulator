@@ -8,11 +8,11 @@ import javax.swing.ImageIcon;
 
 public class PauseButton extends Button {
 	public PauseButton() {
-		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/loginButton.png"));
-		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/loginButton_entered.png"));
+		this.buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/pause.png"));
+		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/pause_entered.png"));
 
 		this.setIcon(this.buttonImage);
-		this.setBounds(850, 250, 200, 152);
+		this.setBounds(1630, 805, 271, 105);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
@@ -35,6 +35,16 @@ public class PauseButton extends Button {
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
+				if(!MainClass.pause)
+				{
+					buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/restart.png"));
+					buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/restart_entered.png"));
+				}
+				else
+				{
+					buttonImage = new ImageIcon(MainClass.class.getResource("../res/image/pause.png"));
+					buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/pause_entered.png"));
+				}
 				MainClass.pause = !MainClass.pause;
 			}
 		});

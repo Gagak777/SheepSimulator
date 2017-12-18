@@ -12,7 +12,7 @@ public class SlowButton extends Button {
 		this.buttonEnteredImage = new ImageIcon(MainClass.class.getResource("../res/image/arrow_left_entered.png"));
 		
 		this.setIcon(this.buttonImage);
-		this.setBounds(1641, 558, 86, 89);
+		this.setBounds(1641, 573, 57, 59);
 		this.setBorderPainted(false);
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
@@ -35,8 +35,9 @@ public class SlowButton extends Button {
 			public void mousePressed(MouseEvent e) {
 				buttonPressed = new Music("ButtonPressed.mp3");
 				buttonPressed.start();
-				if(MainClass.simulationSpeed < 0)
+				if(MainClass.simulationSpeed > 1)
 					MainClass.simulationSpeed -= 0.5;
+				Simulator.getInstance().updateSpeed();
 			}
 		});
 	}
